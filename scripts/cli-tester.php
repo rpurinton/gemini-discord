@@ -29,7 +29,7 @@ $safetySettings = [
 
 $tools = [];
 $history = [];
-$cli_prompt = '> ';
+$cli_prompt = 'user> ';
 
 while (true) {
     $input = readline($cli_prompt);
@@ -47,10 +47,11 @@ while (true) {
         default:
             $history[] = ['role' => 'user', 'parts' => ['text' => $input]];
             $prompt = new GeminiPrompt($generationConfig, $history, $safetySettings, $tools);
+            echo 'gemini...';
             $response = $client->getResponse($prompt->toJson());
             $text = $response->getText();
             $history[] = ['role' => 'assistant', 'parts' => ['text' => $text]];
-            echo $text . PHP_EOL;
+            echo "\r                    \rgemini> $text\n";
             break;
     }
 }
