@@ -1,8 +1,8 @@
 <?php
 
-namespace RPurinton\gemini-discord\RabbitMQ;
+namespace RPurinton\GeminiDiscord\RabbitMQ;
 
-use RPurinton\gemini-discord\{Config, Error, Log};
+use RPurinton\GeminiDiscord\{Config, Error, Log};
 use Bunny\{Client, Channel, Exception\BunnyException};
 use stdClass;
 

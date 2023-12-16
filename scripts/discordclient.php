@@ -1,11 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-namespace RPurinton\gemini-discord;
+namespace RPurinton\GeminiDiscord;
 
 use React\EventLoop\Loop;
-use RPurinton\gemini-discord\RabbitMQ\{Consumer, Publisher};
-use RPurinton\gemini-discord\Consumers\DiscordClient;
+use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Publisher};
+use RPurinton\GeminiDiscord\Consumers\DiscordClient;
 
 $worker_id = $argv[1] ?? 0;
 

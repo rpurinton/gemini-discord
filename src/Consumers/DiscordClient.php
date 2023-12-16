@@ -1,14 +1,14 @@
 <?php
 
-namespace RPurinton\gemini-discord\Consumers;
+namespace RPurinton\GeminiDiscord\Consumers;
 
 use Bunny\{Channel, Message};
 use Discord\{Discord, WebSockets\Intents};
 use Discord\Parts\User\Activity;
 use Discord\Parts\Interactions\{Interaction, Command\Command};
 use React\{Async, EventLoop\LoopInterface};
-use RPurinton\gemini-discord\{Commands, Log, Error, MySQL};
-use RPurinton\gemini-discord\RabbitMQ\{Consumer, Publisher};
+use RPurinton\GeminiDiscord\{Commands, Log, Error, MySQL};
+use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Publisher};
 use stdClass;
 
 class DiscordClient
@@ -36,11 +36,11 @@ class DiscordClient
     private function validateConfig(array $config): bool
     {
         $requiredKeys = [
-            'log' => 'RPurinton\gemini-discord\Log',
+            'log' => 'RPurinton\GeminiDiscord\Log',
             'loop' => 'React\EventLoop\LoopInterface',
-            'mq' => 'RPurinton\gemini-discord\RabbitMQ\Consumer',
-            'pub' => 'RPurinton\gemini-discord\RabbitMQ\Publisher',
-            'sql' => 'RPurinton\gemini-discord\MySQL'
+            'mq' => 'RPurinton\GeminiDiscord\RabbitMQ\Consumer',
+            'pub' => 'RPurinton\GeminiDiscord\RabbitMQ\Publisher',
+            'sql' => 'RPurinton\GeminiDiscord\MySQL'
         ];
         foreach ($requiredKeys as $key => $class) {
             if (!array_key_exists($key, $config)) throw new Error('missing required key ' . $key);

@@ -1,6 +1,6 @@
 <?php
 
-namespace RPurinton\gemini-discord;
+namespace RPurinton\GeminiDiscord;
 
 use Monolog\Level;
 use Monolog\Handler\StreamHandler;

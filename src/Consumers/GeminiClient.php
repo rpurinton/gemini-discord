@@ -1,11 +1,11 @@
 <?php
 
-namespace RPurinton\gemini-discord\Consumers;
+namespace RPurinton\GeminiDiscord\Consumers;
 
 use Bunny\{Channel, Message};
 use React\EventLoop\LoopInterface;
-use RPurinton\gemini-discord\{Locales, Log, Error, MySQL};
-use RPurinton\gemini-discord\RabbitMQ\{Consumer, Sync};
+use RPurinton\GeminiDiscord\{Locales, Log, Error, MySQL};
+use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
 
 class OpenAIClient
 {
@@ -32,11 +32,11 @@ class OpenAIClient
     private function validateConfig(array $config): bool
     {
         $requiredKeys = [
-            'log' => 'RPurinton\gemini-discord\Log',
+            'log' => 'RPurinton\GeminiDiscord\Log',
             'loop' => 'React\EventLoop\LoopInterface',
-            'mq' => 'RPurinton\gemini-discord\RabbitMQ\Consumer',
-            'sync' => 'RPurinton\gemini-discord\RabbitMQ\Sync',
-            'sql' => 'RPurinton\gemini-discord\MySQL'
+            'mq' => 'RPurinton\GeminiDiscord\RabbitMQ\Consumer',
+            'sync' => 'RPurinton\GeminiDiscord\RabbitMQ\Sync',
+            'sql' => 'RPurinton\GeminiDiscord\MySQL'
         ];
         foreach ($requiredKeys as $key => $class) {
             if (!array_key_exists($key, $config)) throw new Error('missing required key ' . $key);

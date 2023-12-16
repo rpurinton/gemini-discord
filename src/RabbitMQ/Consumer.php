@@ -1,8 +1,8 @@
 <?php
 
-namespace RPurinton\gemini-discord\RabbitMQ;
+namespace RPurinton\GeminiDiscord\RabbitMQ;
 
-use RPurinton\gemini-discord\{Config, Log, Error};
+use RPurinton\GeminiDiscord\{Config, Log, Error};
 use React\{Async, EventLoop\LoopInterface};
 use Bunny\{Async\Client, Channel};
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace RPurinton\gemini-discord\RabbitMQ;
+namespace RPurinton\GeminiDiscord\RabbitMQ;
 
 class Sync extends Publisher
 {
