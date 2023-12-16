@@ -134,23 +134,67 @@ class DiscordClient
 
     private function splitMessage(string $content): array
     {
-        $lines = explode('\n', $content . ' ');
+        $lines = explode("\n", $content . ' ');
         $mode = 'by_line';
+        $result = '';
         while (count($lines)) {
             $line = array_shift($lines);
-            if (strlen($line) <= 2000) {
-                return ['content' => $line, 'remaining' => $lines, 'mode' => $mode];
+            if (strlen($line) > 2000) {
+                if ($mode === 'by_line') {
+                    $sentences = explode('. ', $line);
+                    $mode = 'by_sentence';
+                    foreach ($lines as $line) {
+                        $sentences[] = $line;
+                    }
+                    $lines = $sentences;
+                    $line = array_shift($lines);
+                }
+                if (strlen($line) > 2000 && $mode === 'by_sentence') {
+                    $words = explode(' ', $line);
+                    $mode = 'by_word';
+                    foreach ($lines as $line) {
+                        $words[] = $line;
+                    }
+                    $lines = $words;
+                    $line = array_shift($lines);
+                }
+                if (strlen($line) > 2000 && $mode === 'by_word') {
+                    $chars = str_split($line);
+                    $mode = 'by_char';
+                    foreach ($lines as $line) {
+                        $chars[] = $line;
+                    }
+                    $lines = $chars;
+                    $line = array_shift($lines);
+                }
             }
-            if ($mode !== 'by_char') {
-                $split = $mode === 'by_line' ? explode('. ', $line) : explode(' ', $line);
-                $mode = $mode === 'by_line' ? 'by_sentence' : 'by_word';
-                $lines = array_merge($split, $lines);
-            } else {
-                $lines = array_merge(str_split($line), $lines);
+            $old_result = $result;
+            switch ($mode) {
+                case 'by_char':
+                    $result .= $line;
+                    break;
+                case 'by_word':
+                    $result .= $line . ' ';
+                    break;
+                case 'by_sentence':
+                    $result .= $line . '. ';
+                    break;
+                case 'by_line':
+                    $result .= $line . "\n";
+                    break;
+            }
+            if (strlen($result) > 2000) {
+                $result = $old_result;
+                array_unshift($lines, $line);
+                if (substr($result, -1) == ' ') {
+                    $result = substr($result, 0, -1);
+                }
+                return ['content' => $result, 'remaining' => $lines, 'mode' => $mode];
             }
         }
-        return ['content' => '', 'remaining' => [], 'mode' => $mode];
+        return ['content' => $result, 'remaining' => [], 'mode' => $mode];
     }
+
 
     private function sendMessage(array $message): void
     {
