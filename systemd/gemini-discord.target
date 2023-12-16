@@ -1,10 +1,10 @@
 [Unit]
 Description=gemini-discord Target
-Wants=gemini-discord-discordclient.service
-Wants=gemini-discord-geminiclient@1.service
-Wants=gemini-discord-geminiclient@2.service
-Wants=gemini-discord-geminiclient@3.service
-Wants=gemini-discord-geminiclient@4.service
+Wants=discord-gemini.service
+Wants=gemini-discord@1.service
+Wants=gemini-discord@2.service
+Wants=gemini-discord@3.service
+Wants=gemini-discord@4.service
 After=network.target
 
 [Install]
