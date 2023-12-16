@@ -122,6 +122,7 @@ class GeminiDiscord
         if (empty($data['content'])) return true;
         if (strpos($data['content'], '<@' . $this->discord_id . '>') === false) return true;
         $content = $data['content'];
+        $content = str_replace('<@' . $this->discord_id . '>', '', $content);
         $base_content = $this->prompt['content'];
         $base_content[] = ['role' => 'user', 'parts' => ['text' => $content]];
         $prompt = new GeminiPrompt($this->prompt['generationConfig'], $base_content, $this->prompt['safetySettings'], $this->prompt['tools']);
