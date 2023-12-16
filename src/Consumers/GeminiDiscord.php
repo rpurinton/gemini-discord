@@ -120,6 +120,7 @@ class GeminiDiscord
         if (!isset($data['author']['id'], $data['content'])) return true;
         if ($data['author']['id'] == $this->discord_id) return true;
         if (empty($data['content'])) return true;
+        if (strpos($data['content'], '<@' . $this->discord_id . '>') === false) return true;
         $content = $data['content'];
         $base_content = $this->prompt['content'];
         $base_content[] = ['role' => 'user', 'parts' => ['text' => $content]];
