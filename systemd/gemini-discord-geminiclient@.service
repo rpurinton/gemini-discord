@@ -1,5 +1,5 @@
 [Unit]
-Description=gemini-discord OpenAIClient %i
+Description=gemini-discord geminiClient %i
 PartOf=gemini-discord.target
 After=network.target
 

@@ -502,7 +502,7 @@
                     "email": "thisismehrab@gmail.com"
                 }
             ],
-            "description": "a clone of python tiktoken but for PHP! fast BPE tokeniser for use with OpenAI's models.",
+            "description": "a clone of python tiktoken but for PHP! fast BPE tokeniser for use with gemini's models.",
             "support": {
                 "source": "https://github.com/mehrab-wj/tiktoken-php/tree/v1.0.0"
             },

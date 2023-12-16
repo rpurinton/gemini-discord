@@ -94,19 +94,19 @@ class DiscordClient
             "t" => 'INTERACTION_HANDLE',
             "d" => json_decode(json_encode($interaction), true)
         ];
-        $this->pub->publish("openai", $message);
+        $this->pub->publish("gemini", $message);
         $interaction->acknowledgeWithResponse(true);
     }
 
     private function raw(stdClass $message, Discord $discord): bool // from Discord\Discord::onRaw
     {
         $this->log->debug('raw', ['message' => $message]);
-        $queue = 'openai';
+        $queue = 'gemini';
         if ($message->op === 11) {
             $this->sql->query('SELECT 1'); // heartbeat / keep MySQL connection alive
             $queue = 'broadcast'; // send heartbeat to all consumers
         }
-        $this->pub->publish($queue, $message) or throw new Error('failed to publish message to openai');
+        $this->pub->publish($queue, $message) or throw new Error('failed to publish message to gemini');
         return true;
     }
 

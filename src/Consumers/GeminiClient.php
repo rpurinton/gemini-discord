@@ -4,6 +4,8 @@ namespace RPurinton\GeminiDiscord\Consumers;
 
 use Bunny\{Channel, Message};
 use React\EventLoop\LoopInterface;
+use RPurinton\GeminiPHP\GeminiClient as GeminiPHP;
+use RPurinton\GeminiPHP\{GeminiPrompt, GeminiResponse};
 use RPurinton\GeminiDiscord\{Locales, Log, Error, MySQL};
 use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
 
@@ -15,8 +17,9 @@ class GeminiClient
     private ?Consumer $mq = null;
     private ?Sync $sync = null;
     private ?MySQL $sql = null;
-    private ?string $openai_token = null;
+    private ?string $gemini_token = null;
     private ?array $locales = null;
+    private ?GeminiPHP $ai = null;
 
     public function __construct(private array $config)
     {
@@ -26,7 +29,7 @@ class GeminiClient
         $this->mq = $config['mq'];
         $this->sync = $config['sync'];
         $this->sql = $config['sql'];
-        $this->log->debug('OpenAIClient::construct');
+        $this->log->debug('geminiClient::construct');
     }
 
     private function validateConfig(array $config): bool
@@ -50,8 +53,7 @@ class GeminiClient
         $this->log->debug('GeminiClient::init');
         $this->locales = Locales::get();
         $this->discord_id = $this->getId();
-        $this->openai_token = $this->getOpenAIToken();
-        $sharing_queue = 'openai';
+        $sharing_queue = 'gemini';
         $private_queue = $this->log->getName();
         $this->sync->queueDeclare($sharing_queue, false) or throw new Error('failed to declare private queue');
         $this->sync->queueDeclare($private_queue, true) or throw new Error('failed to declare private queue');
@@ -109,50 +111,12 @@ class GeminiClient
         return true;
     }
 
-    private function getOpenAIToken(): string
-    {
-        $result = $this->sql->query('SELECT `api_key` FROM `openai_api_keys` LIMIT 1');
-        if ($result === false) throw new Error('failed to get openai_api_key');
-        if ($result->num_rows === 0) throw new Error('no openai_api_key found');
-        $row = $result->fetch_assoc();
-        $api_key = $row['api_key'] ?? null;
-        $this->validateApiKey($api_key) or throw new Error('invalid openai_api_key');
-        return $api_key;
-    }
-
-    private function validateApiKey(mixed $api_key): bool
-    {
-        $this->log->debug('validateId', ['id' => $api_key, 'type' => gettype($api_key)]);
-        return preg_match('/^sk-[a-zA-Z0-9]{48}$/', $api_key) === 1;
-    }
-
-
     private function messageCreate(array $data): bool
     {
         $this->log->debug('messageCreate', ['data' => $data]);
         if (!isset($data['author']['id'], $data['content'])) return true;
         if ($data['author']['id'] == $this->discord_id) return true;
-        $eval = $this->evaluate($data['content'] ?? null);
-        $this->log->debug('messageCreate', ['eval' => $eval]);
-        $flagged = $eval['results'][0]['flagged'] ?? false;
-        if (!$flagged) return true;
-        $this->log_message($data, $eval) or throw new Error('failed to log message');
         return true;
-    }
-
-    private function evaluate(?string $text): array
-    {
-        $this->log->debug('evaluate', ['text' => $text]);
-        return json_decode(file_get_contents('https://api.openai.com/v1/moderations', false, stream_context_create([
-            'http' => [
-                'method' => 'POST',
-                'header' => implode("\r\n", [
-                    'Authorization: Bearer ' . $this->openai_token,
-                    'Content-Type: application/json'
-                ]),
-                'content' => json_encode(array('input' => $text))
-            ]
-        ])), true);
     }
 
     private function interactionHandle(array $data): bool
@@ -163,47 +127,14 @@ class GeminiClient
         switch ($data['data']['name']) {
             case 'help':
                 return $this->help($data);
-            case 'log_channel':
-                return $this->logChannelSetup($data);
-            case 'Evaluate':
-                return $this->evaluateContext($data);
         }
         return true;
-    }
-
-    private function evaluateContext(array $data): bool
-    {
-        $locale = $this->locales[$data['locale'] ?? 'en-US'] ?? $this->locales['en-US'];
-        $messages = $data['data']['resolved']['messages'] ?? [];
-        foreach ($messages as $message_id => $message) $content = $message['content'] ?? null;
-        $eval = $this->evaluate($content);
-        $results = '';
-        foreach ($eval['results'][0]['category_scores'] as $key => $value) {
-            $score = round($value * 100) . '%';
-            $key = $locale['categories'][$key] ?? $key;
-            $results .= $key . ': ' . $score . "\n";
-        }
-        $results = trim($results);
-        return $this->interactionReply($data['id'], $results);
     }
 
     private function help(array $data): bool
     {
         $locale = $this->locales[$data['locale'] ?? 'en-US'] ?? $this->locales['en-US'];
         return $this->interactionReply($data['id'], $locale['help']);
-    }
-
-    private function logChannelSetup(array $data): bool
-    {
-        $locale = $this->locales[$data['locale'] ?? 'en-US'] ?? $this->locales['en-US'];
-        $admin = $data['member']['permissions']['manage_guild'] ?? false;
-        if (!$admin) return $this->interactionReply($data['id'], $locale['log_channel_admin_only']);
-        $guild_id = $this->sql->escape($data['guild_id'] ?? null);
-        $channel_id = $this->sql->escape($data['channel_id'] ?? null);
-        $guild_locale = $this->sql->escape($data['guild_locale'] ?? null);
-        if (!$guild_id || !$channel_id || !$guild_locale) return $this->interactionReply($data['id'], $locale['log_channel_error']);
-        $this->sql->query("INSERT INTO `log_channels` (`guild_id`, `channel_id`, `guild_locale`) VALUES ('$guild_id', '$channel_id', '$guild_locale') ON DUPLICATE KEY UPDATE `channel_id` = '$channel_id', `guild_locale` = '$guild_locale'") or throw new Error('failed to insert log channel');
-        return $this->interactionReply($data['id'], $locale['log_channel_confirm'] . ' <#' . $data['channel_id'] . '>');
     }
 
     private function interactionReply(int $id, string $content): bool
@@ -220,58 +151,8 @@ class GeminiClient
         return true;
     }
 
-    private function log_message(array $data, array $eval): bool
-    {
-        $guild_id = $data['guild_id'] ?? null;
-        if (!$guild_id) return true;
-        $this->log->debug('log_message', ['guild_id' => $guild_id]);
-        $guild_id_esc = $this->sql->escape($guild_id);
-        $result = $this->sql->query("SELECT `channel_id`, `guild_locale` FROM `log_channels` WHERE `guild_id` = '$guild_id_esc' LIMIT 1");
-        if ($result === false || $result->num_rows === 0) return true;
-        $row = $result->fetch_assoc();
-        $log_channel_id = $row['channel_id'] ?? null;
-        $guild_locale = $row['guild_locale'] ?? null;
-        $locale = $this->locales[$guild_locale] ?? $this->locales['en-US'];
-        if (!$log_channel_id) return true;
-        $this->log->debug('log_message', ['channel_id' => $log_channel_id]);
-        $message_id = $data['id'] ?? null;
-        $author_id = $data['author']['id'] ?? null;
-        $timestamp = $data['timestamp'] ?? null;
-        $channel_id = $data['channel_id'] ?? null;
-        $message_url = 'https://discord.com/channels/' . $guild_id . '/' . $channel_id . '/' . $message_id;
-        $content = $data['content'] ?? null;
-        $description = '<@' . $author_id . '> ' . $content . "\n\n";
-        foreach ($eval['results'][0]['categories'] as $key => $value) {
-            if ($value) {
-                $score = $eval['results'][0]['category_scores'][$key] ?? -1;
-                $score = round($score * 100) . '%';
-                $key = $locale['categories'][$key] ?? $key;
-                $description .= $key . ': ' . $score . "\n";
-            }
-        }
-        $description = trim($description);
-        $this->sync->publish('discord', [
-            'op' => 0, // DISPATCH
-            't' => 'MESSAGE_CREATE',
-            'd' => [
-                'channel_id' => $log_channel_id,
-                'embeds' => [
-                    [
-                        'type' => 'rich',
-                        'title' => $message_url,
-                        'color' => 0xff0000,
-                        'url' => $message_url,
-                        'description' => $description,
-                        'timestamp' => $timestamp,
-                    ]
-                ]
-            ]
-        ]) or throw new Error('failed to publish message to discord');
-        return true;
-    }
-
     public function __destruct()
     {
-        $this->log->debug('OpenAIClient::__destruct');
+        $this->log->debug('geminiClient::__destruct');
     }
 }

@@ -1,5 +1,5 @@
 # gemini-discord
 
-Simple ChatGPT Bot for Discord
+Simple Gemini Bot for Discord
 
-Requires Composer, MySQL, RabbitMQ, and credentials for Discord and OpenAI
+Requires Composer, MySQL, RabbitMQ, and credentials for Discord and Google
