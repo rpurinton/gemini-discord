@@ -3,7 +3,7 @@
 use PHPUnit\Event\Runtime\PHP;
 use RPurinton\GeminiPHP\{GeminiClient, GeminiPrompt};
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $projectId = 'ai-project-408017';
 $regionName = 'us-east4';
