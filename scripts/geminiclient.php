@@ -41,7 +41,7 @@ $gemini = new GeminiClient([
     'sql' => new MySQL($log),
     'gemini' => new \RPurinton\GeminiPHP\GeminiClient(Config::get('gemini'))
 ]) or throw new Error('failed to create Consumer');
-$ih->init() or throw new Error('failed to initialize Consumer');
+$gemini->init() or throw new Error('failed to initialize Consumer');
 $loop->addSignal(SIGINT, function () use ($loop, $log) {
     $log->info('SIGINT received, exiting...');
     $loop->stop();
