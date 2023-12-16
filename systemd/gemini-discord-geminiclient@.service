@@ -1,5 +1,5 @@
 [Unit]
-Description=gemini-discord geminiClient %i
+Description=gemini-discord Gemini Client %i
 PartOf=gemini-discord.target
 After=network.target
 
@@ -7,7 +7,7 @@ After=network.target
 Type=simple
 User=gemini-discord
 Group=gemini-discord
-ExecStart=/var/www/gemini-discord/scripts/geminiiclient.php %i
+ExecStart=/var/www/gemini-discord/scripts/geminidiscord.php %i
 Restart=on-failure
 RestartSec=5
 
