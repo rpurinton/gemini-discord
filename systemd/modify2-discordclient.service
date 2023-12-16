@@ -1,0 +1,15 @@
+[Unit]
+Description=gemini-discord Discord Client
+PartOf=gemini-discord.target
+After=network.target
+
+[Service]
+Type=simple
+User=gemini-discord
+Group=gemini-discord
+ExecStart=/var/www/gemini-discord/scripts/discordclient.php
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=gemini-discord.target

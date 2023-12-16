@@ -1,0 +1,7 @@
+{
+    "host": "127.0.0.1",
+    "vhost": "gemini-discord",
+    "user": "gemini-discord",
+    "password": "gemini-discord",
+    "heartbeat": 1000
+}

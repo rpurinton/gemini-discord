@@ -1,0 +1,35 @@
+{
+    "name": "rpurinton/gemini-discord",
+    "description": "gemini-discord Project Template",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^10.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "RPurinton\\gemini-discord\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Russell Purinton",
+            "email": "russell.purinton@gmail.com"
+        }
+    ],
+    "require": {
+        "react/async": "^4.2",
+        "bunny/bunny": "@dev",
+        "monolog/monolog": "^3.5",
+        "team-reflex/discord-php": "^7.3",
+        "openai-php/client": "^0.8.0",
+        "mehrab-wj/tiktoken-php": "^1.0",
+        "symfony/http-client": "^7.0",
+        "rpurinton/gemini-php": "dev-master"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

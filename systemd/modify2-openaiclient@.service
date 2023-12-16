@@ -1,0 +1,15 @@
+[Unit]
+Description=gemini-discord OpenAIClient %i
+PartOf=gemini-discord.target
+After=network.target
+
+[Service]
+Type=simple
+User=gemini-discord
+Group=gemini-discord
+ExecStart=/var/www/gemini-discord/scripts/openaiclient.php %i
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=gemini-discord.target

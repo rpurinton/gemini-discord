@@ -1,0 +1,12 @@
+[Unit]
+Description=gemini-discord Target
+Wants=gemini-discord-discordclient.service
+Wants=gemini-discord-openaiclient@1.service
+Wants=gemini-discord-openaiclient@2.service
+Wants=gemini-discord-openaiclient@3.service
+Wants=gemini-discord-openaiclient@4.service
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+

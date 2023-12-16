@@ -1,0 +1,19 @@
+{
+    "help": "\ud83e\udd16 **Guia de Ajuda do gemini-discord**\n\nO gemini-discord está aqui para manter o seu servidor do Discord seguro! Veja como começar:\n\n\ud83d\udd11 **Comando: \/canal_de_registro**\nUse este comando para designar um canal onde o gemini-discord enviará alertas para mensagens sinalizadas por conter discurso de ódio, ameaças, assédio, automutilação, conteúdo sexual ou violência.\n\n**Configurando Seu Canal de Registro:**\n1. Crie um novo canal (ou escolha um existente) para os alertas do gemini-discord.\n2. Certifique-se de que o gemini-discord tem permissão para enviar mensagens lá.\n3. Digite `\/canal_de_registro` no canal designado para configurá-lo como seu canal de registro.\n\n\u2728 Pronto! O gemini-discord agora enviará notificações para o seu canal de registro se uma mensagem for sinalizada. Lembre-se, você precisa de permissões de administrador para configurar isso.\n\n\ud83d\ude80 *Planos Futuros:*\n- Níveis de limiar personalizados para categorias de conteúdo.\n- Políticas personalizadas para diferentes canais e funções.\n- Políticas de punição para violações repetidas.\n\nFique atento para atualizações!\n\nPrecisa de mais ajuda? Entre em contato conosco em https:\/\/discord.gg\/sm87ub2sTm\n\n**Obrigado por usar o gemini-discord! Vamos criar uma comunidade segura juntos.**\n\n",
+    "log_channel_confirm": "Canal de registro definido para",
+    "log_channel_admin_only": "Desculpe, mas este comando é apenas para administradores.",
+    "log_channel_error": "Desculpe, mas algo deu errado do nosso lado. Por favor, tente novamente mais tarde.",
+    "categories": {
+        "sexual": "Sexual",
+        "hate": "Ódio",
+        "harassment": "Assédio",
+        "self-harm": "Autolesão",
+        "sexual/minors": "Sexual/Menores",
+        "hate/threatening": "Ódio/Ameaçador",
+        "violence/graphic": "Violência/Gráfica",
+        "self-harm/intent": "Autolesão/Intenção",
+        "self-harm/instructions": "Autolesão/Instruções",
+        "harassment/threatening": "Assédio/Ameaçador",
+        "violence": "Violência"
+    }
+}

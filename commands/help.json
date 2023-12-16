@@ -1,0 +1,20 @@
+{
+    "name": "help",
+    "name_localizations": {
+        "en-US": "help",
+        "pt-BR": "ajuda",
+        "es-ES": "ayuda",
+        "es-419": "ayuda",
+        "zh-CN": "帮助",
+        "ko": "도움말"
+    },
+    "description": "Get help with the bot",
+    "description_localizations": {
+        "en-US": "Get help with the bot",
+        "pt-BR": "Obtenha ajuda com o bot",
+        "es-ES": "Obtén ayuda con el bot",
+        "es-419": "Obtén ayuda con el bot",
+        "zh-CN": "获取机器人帮助",
+        "ko": "봇 도움말"
+    }
+}
