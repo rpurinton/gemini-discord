@@ -2043,12 +2043,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "dbf897c67f969abb62fca1b8c48937cdd92a7e58"
+                "reference": "54e9a286deacc33e28ccb54cf0efc34481223e37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/dbf897c67f969abb62fca1b8c48937cdd92a7e58",
-                "reference": "dbf897c67f969abb62fca1b8c48937cdd92a7e58",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/54e9a286deacc33e28ccb54cf0efc34481223e37",
+                "reference": "54e9a286deacc33e28ccb54cf0efc34481223e37",
                 "shasum": ""
             },
             "require": {
@@ -2080,7 +2080,7 @@
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
                 "source": "https://github.com/rpurinton/gemini-php/tree/master"
             },
-            "time": "2023-12-16T05:25:14+00:00"
+            "time": "2023-12-16T06:07:57+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
