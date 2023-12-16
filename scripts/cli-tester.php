@@ -1,13 +1,14 @@
+#!/usr/bin/env php
 <?php
 
 use PHPUnit\Event\Runtime\PHP;
 use RPurinton\GeminiPHP\{GeminiClient, GeminiPrompt};
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $projectId = 'ai-project-408017';
 $regionName = 'us-east4';
-$credentialsPath = '/home/codespace/.google/ai-project-408017-7382b3944223.json';
+$credentialsPath = '/root/.google/ai-project-408017-7382b3944223.json';
 $modelName = 'gemini-pro'; // or 'gemini-pro-vision'
 
 // Initialize the Gemini client
@@ -28,7 +29,7 @@ $safetySettings = [
 
 $tools = [];
 $history = [];
-$cli_prompt = '> ';
+$cli_prompt = 'user> ';
 
 while (true) {
     $input = readline($cli_prompt);
@@ -46,10 +47,11 @@ while (true) {
         default:
             $history[] = ['role' => 'user', 'parts' => ['text' => $input]];
             $prompt = new GeminiPrompt($generationConfig, $history, $safetySettings, $tools);
+            echo 'gemini...';
             $response = $client->getResponse($prompt->toJson());
             $text = $response->getText();
             $history[] = ['role' => 'assistant', 'parts' => ['text' => $text]];
-            echo $text . PHP_EOL;
+            echo "\r                    \rgemini> $text\n";
             break;
     }
 }
