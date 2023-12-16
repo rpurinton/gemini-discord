@@ -1,6 +1,6 @@
 {
-    "project": "ai-project-123456",
-    "region": "us-east4",
+    "projectId": "ai-project-123456",
+    "regionId": "us-east4",
     "credentialsPath": "/home/gemini-discord/.google/ai-project-408017-7382b3944223.json",
-    "model": "gemini-pro"
+    "modelName": "gemini-pro"
 }
