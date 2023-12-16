@@ -7,7 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $projectId = 'ai-project-408017';
 $regionName = 'us-east4';
-$credentialsPath = '/home/codespace/.google/ai-project-408017-7382b3944223.json';
+$credentialsPath = '/root/.google/ai-project-408017-7382b3944223.json';
 $modelName = 'gemini-pro'; // or 'gemini-pro-vision'
 
 // Initialize the Gemini client
