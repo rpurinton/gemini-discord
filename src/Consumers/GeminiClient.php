@@ -7,7 +7,7 @@ use React\EventLoop\LoopInterface;
 use RPurinton\GeminiDiscord\{Locales, Log, Error, MySQL};
 use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
 
-class OpenAIClient
+class GeminiClient
 {
     private ?int $discord_id = null;
     private ?Log $log = null;
@@ -47,7 +47,7 @@ class OpenAIClient
 
     public function init(): bool
     {
-        $this->log->debug('OpenAIClient::init');
+        $this->log->debug('GeminiClient::init');
         $this->locales = Locales::get();
         $this->discord_id = $this->getId();
         $this->openai_token = $this->getOpenAIToken();

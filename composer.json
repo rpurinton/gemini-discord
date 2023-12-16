@@ -22,7 +22,6 @@
         "bunny/bunny": "@dev",
         "monolog/monolog": "^3.5",
         "team-reflex/discord-php": "^7.3",
-        "openai-php/client": "^0.8.0",
         "mehrab-wj/tiktoken-php": "^1.0",
         "symfony/http-client": "^7.0",
         "rpurinton/gemini-php": "dev-master"
