@@ -17,7 +17,6 @@ class GeminiClient
     private ?Consumer $mq = null;
     private ?Sync $sync = null;
     private ?MySQL $sql = null;
-    private ?string $gemini_token = null;
     private ?array $locales = null;
     private ?GeminiPHP $ai = null;
 
@@ -29,6 +28,7 @@ class GeminiClient
         $this->mq = $config['mq'];
         $this->sync = $config['sync'];
         $this->sql = $config['sql'];
+        $this->ai = $config['gemini'];
         $this->log->debug('geminiClient::construct');
     }
 
@@ -39,7 +39,8 @@ class GeminiClient
             'loop' => 'React\EventLoop\LoopInterface',
             'mq' => 'RPurinton\GeminiDiscord\RabbitMQ\Consumer',
             'sync' => 'RPurinton\GeminiDiscord\RabbitMQ\Sync',
-            'sql' => 'RPurinton\GeminiDiscord\MySQL'
+            'sql' => 'RPurinton\GeminiDiscord\MySQL',
+            'gemini' => 'RPurinton\GeminiPHP\GeminiClient'
         ];
         foreach ($requiredKeys as $key => $class) {
             if (!array_key_exists($key, $config)) throw new Error('missing required key ' . $key);

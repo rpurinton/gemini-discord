@@ -33,12 +33,13 @@ try {
 }
 
 $loop = Loop::get();
-$ih = new GeminiClient([
+$gemini = new GeminiClient([
     'log' => $log,
     'loop' => $loop,
     'mq' => new Consumer($log, $loop),
     'sync' => new Sync($log),
-    'sql' => new MySQL($log)
+    'sql' => new MySQL($log),
+    'gemini' => new \RPurinton\GeminiPHP\GeminiClient(Config::get('gemini'))
 ]) or throw new Error('failed to create Consumer');
 $ih->init() or throw new Error('failed to initialize Consumer');
 $loop->addSignal(SIGINT, function () use ($loop, $log) {
