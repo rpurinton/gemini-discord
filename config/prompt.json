@@ -5,20 +5,7 @@
         "topK": 20,
         "maxOutputTokens": 2048
     },
-    "content": [
-        {
-            "role": "user",
-            "parts": {
-                "text": "[SYSTEM] You are Google Gemini."
-            }
-        },
-        {
-            "role": "model",
-            "parts": {
-                "text": "I understand from now on I will act as Google Gemini."
-            }
-        }
-    ],
+    "content": [],
     "safetySettings": {},
     "tools": {}
 }
