@@ -4,12 +4,12 @@ namespace RPurinton\GeminiDiscord\Consumers;
 
 use Bunny\{Channel, Message};
 use React\EventLoop\LoopInterface;
-use RPurinton\GeminiPHP\GeminiClient as GeminiPHP;
-use RPurinton\GeminiPHP\{GeminiPrompt, GeminiResponse};
-use RPurinton\GeminiDiscord\{Locales, Log, Error, MySQL};
+use RPurinton\GeminiPHP\GeminiClient;
+use RPurinton\GeminiPHP\GeminiPrompt;
+use RPurinton\GeminiDiscord\{Config, Locales, Log, Error, MySQL};
 use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
 
-class GeminiClient
+class GeminiDiscord
 {
     private ?int $discord_id = null;
     private ?Log $log = null;
@@ -18,7 +18,8 @@ class GeminiClient
     private ?Sync $sync = null;
     private ?MySQL $sql = null;
     private ?array $locales = null;
-    private ?GeminiPHP $ai = null;
+    private ?GeminiClient $ai = null;
+    private ?array $prompt = null;
 
     public function __construct(private array $config)
     {
@@ -53,6 +54,7 @@ class GeminiClient
     {
         $this->log->debug('GeminiClient::init');
         $this->locales = Locales::get();
+        $this->prompt = Config::get('prompt');
         $this->discord_id = $this->getId();
         $sharing_queue = 'gemini';
         $private_queue = $this->log->getName();
@@ -117,6 +119,23 @@ class GeminiClient
         $this->log->debug('messageCreate', ['data' => $data]);
         if (!isset($data['author']['id'], $data['content'])) return true;
         if ($data['author']['id'] == $this->discord_id) return true;
+        if (empty($data['content'])) return true;
+        $content = $data['content'];
+        $base_content = $this->prompt['content'];
+        $base_content[] = ['role' => 'user', 'parts' => ['text' => $content]];
+        $prompt = new GeminiPrompt($this->prompt['generationConfig'], $base_content, $this->prompt['safetySettings'], $this->prompt['tools']);
+        $response = $this->ai->getResponse($prompt->toJson());
+        $text = $response->getText();
+        $this->log->debug('messageCreate', ['text' => $text]);
+        if (empty($text)) return true;
+        $this->sync->publish('discord', [
+            'op' => 0, // DISPATCH
+            't' => 'MESSAGE_CREATE',
+            'd' => [
+                'channel_id' => $data['channel_id'],
+                'content' => $text,
+            ]
+        ]) or throw new Error('failed to publish message to discord');
         return true;
     }
 

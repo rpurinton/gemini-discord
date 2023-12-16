@@ -4,8 +4,9 @@
 namespace RPurinton\GeminiDiscord;
 
 use React\EventLoop\Loop;
+use RPurinton\GeminiPHP\GeminiClient;
 use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
-use RPurinton\GeminiDiscord\Consumers\GeminiClient;
+use RPurinton\GeminiDiscord\Consumers\GeminiDiscord;
 
 $worker_id = $argv[1] ?? 0;
 
@@ -33,13 +34,13 @@ try {
 }
 
 $loop = Loop::get();
-$gemini = new GeminiClient([
+$gemini = new GeminiDiscord([
     'log' => $log,
     'loop' => $loop,
     'mq' => new Consumer($log, $loop),
     'sync' => new Sync($log),
     'sql' => new MySQL($log),
-    'gemini' => new \RPurinton\GeminiPHP\GeminiClient(Config::get('gemini'))
+    'gemini' => new GeminiClient(Config::get('gemini'))
 ]) or throw new Error('failed to create Consumer');
 $gemini->init() or throw new Error('failed to initialize Consumer');
 $loop->addSignal(SIGINT, function () use ($loop, $log) {

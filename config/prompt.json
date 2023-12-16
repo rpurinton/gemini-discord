@@ -1,0 +1,24 @@
+{
+    "generationConfig": {
+        "temperature": 0.5,
+        "topP": 0.5,
+        "topK": 20,
+        "maxOutputTokens": 2048
+    },
+    "content": [
+        {
+            "role": "user",
+            "parts": {
+                "text": "[SYSTEM] You are Google Gemini."
+            }
+        },
+        {
+            "role": "model",
+            "parts": {
+                "text": "I understand from now on I will act as Google Gemini."
+            }
+        }
+    ],
+    "safetySettings": {},
+    "tools": {}
+}
