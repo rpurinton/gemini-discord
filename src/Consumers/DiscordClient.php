@@ -71,7 +71,7 @@ class DiscordClient
         $this->pub->queueDeclare($sharing_queue, false) or throw new Error('failed to declare private queue');
         $this->mq->consume('discord', $this->callback(...)) or throw new Error('failed to connect to queue');
         $activity = $this->discord->factory(Activity::class, [
-            'name' => 'Discord Moderator',
+            'name' => 'AI Language Model',
             'type' => Activity::TYPE_PLAYING
         ]);
         $this->discord->updatePresence($activity);
