@@ -126,7 +126,7 @@ class GeminiDiscord
         $content = str_replace('<@' . $this->discord_id . '>', '', $content);
         $base_content = $this->prompt['content'];
         $base_content[] = ['role' => 'user', 'parts' => ['text' => $content]];
-        $prompt = new GeminiPrompt($this->prompt['generationConfig'], $base_content, $this->prompt['safetySettings'], $this->prompt['tools']);
+        $prompt = new GeminiPrompt($this->prompt['generation_config'], $base_content, $this->prompt['safety_settings'], $this->prompt['tools']);
         $response = $this->ai->getResponse($prompt->toJson());
         $text = $response->getText();
         $this->log->debug('messageCreate', ['text' => $text]);
