@@ -502,7 +502,7 @@
                     "email": "thisismehrab@gmail.com"
                 }
             ],
-            "description": "a clone of python tiktoken but for PHP! fast BPE tokeniser for use with gemini's models.",
+            "description": "a clone of python tiktoken but for PHP! fast BPE tokeniser for use with OpenAI's models.",
             "support": {
                 "source": "https://github.com/mehrab-wj/tiktoken-php/tree/v1.0.0"
             },
@@ -2043,12 +2043,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "6a3ea7fbae515a0ce9e410a9e8acc535b5479c0d"
+                "reference": "86b37494b04c2c8c3d40ca00b7e75bf38b227e17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/6a3ea7fbae515a0ce9e410a9e8acc535b5479c0d",
-                "reference": "6a3ea7fbae515a0ce9e410a9e8acc535b5479c0d",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/86b37494b04c2c8c3d40ca00b7e75bf38b227e17",
+                "reference": "86b37494b04c2c8c3d40ca00b7e75bf38b227e17",
                 "shasum": ""
             },
             "require": {
@@ -2080,7 +2080,7 @@
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
                 "source": "https://github.com/rpurinton/gemini-php/tree/master"
             },
-            "time": "2023-12-15T23:38:49+00:00"
+            "time": "2023-12-16T02:39:04+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
