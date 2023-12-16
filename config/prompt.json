@@ -6,23 +6,9 @@
         "maxOutputTokens": 2048
     },
     "content": [],
-    "safetySettings": [
-        {
-            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-            "treshold": "BLOCK_NONE"
-        },
-        {
-            "category": "HARM_CATEGORY_HATE_SPEECH",
-            "treshold": "BLOCK_NONE"
-        },
-        {
-            "category": "HARM_CATEGORY_HARASSMENT",
-            "treshold": "BLOCK_NONE"
-        },
-        {
-            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-            "treshold": "BLOCK_NONE"
-        }
-    ],
+    "safetySettings": {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "treshold": "BLOCK_NONE"
+    },
     "tools": {}
 }
