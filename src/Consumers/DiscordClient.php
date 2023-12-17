@@ -13,6 +13,8 @@ use stdClass;
 
 class DiscordClient
 {
+    const DISCORD_QUEUE = 'discord';
+    const GEMINI_QUEUE = 'gemini';
     private ?string $token = null;
     private ?Discord $discord = null;
     private ?Log $log = null;
@@ -67,9 +69,8 @@ class DiscordClient
 
     private function ready()
     {
-        $sharing_queue = 'discord';
-        $this->pub->queueDeclare($sharing_queue, false) or throw new Error('failed to declare private queue');
-        $this->mq->consume('discord', $this->callback(...)) or throw new Error('failed to connect to queue');
+        $this->pub->queueDeclare(self::DISCORD_QUEUE, false) or throw new Error('failed to declare discord queue');
+        $this->mq->consume(self::DISCORD_QUEUE, $this->callback(...)) or throw new Error('failed to connect to discord queue');
         $activity = $this->discord->factory(Activity::class, [
             'name' => 'AI Language Model',
             'type' => Activity::TYPE_PLAYING
@@ -81,7 +82,7 @@ class DiscordClient
         foreach (Commands::get() as $command) {
             $slashcommand = new Command($this->discord, $command);
             $this->discord->application->commands->save($slashcommand);
-            $this->discord->listenCommand($command["name"], $this->interaction(...));
+            $this->discord->listenCommand($command['name'], $this->interaction(...));
         }
     }
 
@@ -90,11 +91,11 @@ class DiscordClient
         $this->log->debug('interaction', ['interaction' => $interaction]);
         $this->interactions[$interaction->id] = $interaction;
         $message = [
-            "op" => 0,
-            "t" => 'INTERACTION_HANDLE',
-            "d" => json_decode(json_encode($interaction), true)
+            'op' => 0,
+            't' => 'INTERACTION_HANDLE',
+            'd' => json_decode(json_encode($interaction), true)
         ];
-        $this->pub->publish("gemini", $message);
+        $this->pub->publish(self::GEMINI_QUEUE, $message);
         $interaction->acknowledgeWithResponse(true);
     }
 
@@ -104,7 +105,7 @@ class DiscordClient
         if ($this->heartbeat($message)) return true;
         if (!$this->relevant($message)) return true;
         if (!$this->allowed($message)) return true;
-        $this->pub->publish('gemini', $this->getPublishMessage($message)) or throw new Error('failed to publish message to gemini');
+        $this->pub->publish(self::GEMINI_QUEUE, $this->getPublishMessage($message)) or throw new Error('failed to publish message to gemini');
         return true;
     }
 
@@ -146,10 +147,10 @@ class DiscordClient
         $guild = $this->discord->guilds[$message->d->guild_id];
         $channel = $guild->channels[$message->d->channel_id];
         $publish_message = json_decode(json_encode($message), true);
-        $publish_message["d"]["history"] = Async\await($channel->getMessageHistory(['limit' => 100]));
-        $publish_message["d"]["guild_name"] = $guild->name;
-        $publish_message["d"]["channel_name"] = $channel->name;
-        $publish_message["d"]["channel_topic"] = $channel->topic;
+        $publish_message['d']['history'] = Async\await($channel->getMessageHistory(['limit' => 100]));
+        $publish_message['d']['guild_name'] = $guild->name;
+        $publish_message['d']['channel_name'] = $channel->name;
+        $publish_message['d']['channel_topic'] = $channel->topic;
         return $publish_message;
     }
 
@@ -177,7 +178,7 @@ class DiscordClient
 
     private function splitMessage(string $content): array
     {
-        $lines = explode("\n", $content . ' ');
+        $lines = explode('\n', $content . ' ');
         $mode = 'by_line';
         $result = '';
         while (count($lines)) {
@@ -223,7 +224,7 @@ class DiscordClient
                     $result .= $line . '. ';
                     break;
                 case 'by_line':
-                    $result .= $line . "\n";
+                    $result .= $line . '\n';
                     break;
             }
             if (strlen($result) > 2000) {
