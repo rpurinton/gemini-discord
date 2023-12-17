@@ -112,7 +112,7 @@ class DiscordClient
     {
         if ($message->op !== 11) return false;
         $this->sql->query('SELECT 1'); // heartbeat / keep MySQL connection alive
-        $this->pub->publish('broadcast', $message) or throw new Error('failed to publish message to gemini');
+        $this->pub->publish('broadcast', $message) or throw new Error('failed to publish broadcast message to gemini');
         return true;
     }
 
@@ -143,10 +143,11 @@ class DiscordClient
 
     private function getPublishMessage($message): array
     {
-        $channel = $message->d->channel;
+        $guild = $this->discord->guilds[$message->d->guild_id];
+        $channel = $guild->channels[$message->d->channel_id];
         $publish_message = json_decode(json_encode($message), true);
         $publish_message["d"]["history"] = Async\await($channel->getMessageHistory(['limit' => 100]));
-        $publish_message["d"]["guild_name"] = $channel->guild->name;
+        $publish_message["d"]["guild_name"] = $guild->name;
         $publish_message["d"]["channel_name"] = $channel->name;
         $publish_message["d"]["channel_topic"] = $channel->topic;
         return $publish_message;
