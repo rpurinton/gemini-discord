@@ -24,7 +24,8 @@
         "team-reflex/discord-php": "^7.3",
         "mehrab-wj/tiktoken-php": "^1.0",
         "symfony/http-client": "^7.0",
-        "rpurinton/gemini-php": "dev-master"
+        "rpurinton/gemini-php": "dev-master",
+        "google/auth": "^1.33"
     },
     "config": {
         "allow-plugins": {
