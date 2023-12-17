@@ -4,8 +4,19 @@
 namespace RPurinton\GeminiDiscord;
 
 use React\EventLoop\Loop;
-use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Publisher};
-use RPurinton\GeminiDiscord\Consumers\DiscordClient;
+use RPurinton\GeminiDiscord\{
+    RabbitMQ\Consumer,
+    RabbitMQ\Publisher,
+    Consumers\DiscordClient,
+};
+use RPurinton\GeminiDiscord\Consumers\DiscordClient\{
+    Config,
+    Init,
+    Interaction,
+    Message,
+    Raw,
+    Callback,
+};
 
 $worker_id = $argv[1] ?? 0;
 
@@ -33,12 +44,31 @@ try {
 }
 
 $loop = Loop::get();
-$dc = new DiscordClient([
+$config = new Config([
     'log' => $log,
     'loop' => $loop,
     'mq' => new Consumer($log, $loop),
     'pub' => new Publisher($log),
     'sql' => new MySQL($log)
+]) or throw new Error('failed to create DiscordClient config');
+$dc = new DiscordClient([
+    'config' => $config,
+    'init' => new Init($config),
+    'interaction' => new Interaction([
+        'log' => $config->log,
+        'pub' => $config->pub,
+    ]),
+    'message' => new Message($log),
+    'raw' => new Raw([
+        'log' => $config->log,
+        'sql' => $config->sql,
+        'pub' => $config->pub,
+    ]),
+    'callback' => new Callback([
+        'log' => $config->log,
+        'pub' => $config->pub,
+        'mq' => $config->mq,
+    ]),
 ]) or throw new Error('failed to create DiscordClient');
 $dc->init() or throw new Error('failed to initialize DiscordClient');
 $loop->addSignal(SIGINT, function () use ($loop, $log) {
