@@ -1,7 +1,7 @@
 [
     {
         "path": "php://stdout",
-        "level": "INFO"
+        "level": "DEBUG"
     },
     {
         "path": "logs/error.log",
