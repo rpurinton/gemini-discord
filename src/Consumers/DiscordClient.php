@@ -85,7 +85,7 @@ class DiscordClient
         }
     }
 
-    private function interaction(Interaction $interaction)
+    private function interaction(Interaction $interaction): void
     {
         $this->log->debug('interaction', ['interaction' => $interaction]);
         $this->interactions[$interaction->id] = $interaction;
@@ -101,13 +101,55 @@ class DiscordClient
     private function raw(stdClass $message, Discord $discord): bool // from Discord\Discord::onRaw
     {
         $this->log->debug('raw', ['message' => $message]);
-        $queue = 'gemini';
-        if ($message->op === 11) {
-            $this->sql->query('SELECT 1'); // heartbeat / keep MySQL connection alive
-            $queue = 'broadcast'; // send heartbeat to all consumers
-        }
-        $this->pub->publish($queue, $message) or throw new Error('failed to publish message to gemini');
+        if ($this->heartbeat($message)) return true;
+        if (!$this->relevant($message)) return true;
+        if (!$this->allowed($message)) return true;
+        $this->pub->publish('gemini', $this->getPublishMessage($message)) or throw new Error('failed to publish message to gemini');
         return true;
+    }
+
+    private function heartbeat(stdClass $message): bool
+    {
+        if ($message->op !== 11) return false;
+        $this->sql->query('SELECT 1'); // heartbeat / keep MySQL connection alive
+        $this->pub->publish('broadcast', $message) or throw new Error('failed to publish message to gemini');
+        return true;
+    }
+
+    private function relevant(stdClass $message): bool
+    {
+        $relevant_types = ['MESSAGE_CREATE'];
+        if (!in_array($message->t, $relevant_types)) return false;
+        if (!isset($message->d->author->id, $message->d->content)) return false;
+        if ($message->d->author->id == $this->discord->id) return false;
+        if (empty($message->d->content)) return false;
+        if (isset($message->d->author->bot) && $message->d->author->bot === true) return false;
+
+        if (isset($message->d->referenced_message) && $message->d->referenced_message->author->id == $this->discord->id) return true;
+        if (strpos($message->d->content, '<@' . $this->discord->id . '>') !== false) return true;
+
+        return false;
+    }
+
+    private function allowed(stdClass $message): bool
+    {
+        $guild_id = $message->d->guild_id;
+        $member_roles = implode(',', $message->d->member->roles);
+        $request = $this->sql->query("SELECT count(1) as `allowed` FROM `allowed_roles` WHERE `guild_id` = '$guild_id' AND `role_id` IN ($member_roles)");
+        if ($request === false) throw new Error('failed to get allowed roles');
+        $row = $request->fetch_assoc();
+        return $row['allowed'] > 0;
+    }
+
+    private function getPublishMessage($message): array
+    {
+        $channel = $message->d->channel;
+        $publish_message = json_decode(json_encode($message), true);
+        $publish_message["d"]["history"] = Async\await($channel->getMessageHistory(['limit' => 100]));
+        $publish_message["d"]["guild_name"] = $channel->guild->name;
+        $publish_message["d"]["channel_name"] = $channel->name;
+        $publish_message["d"]["channel_topic"] = $channel->topic;
+        return $publish_message;
     }
 
     public function callback(Message $message, Channel $channel): bool // from RabbitMQ\Consumer::connect

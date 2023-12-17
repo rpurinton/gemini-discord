@@ -117,11 +117,6 @@ class GeminiDiscord
     private function messageCreate(array $data): bool
     {
         $this->log->debug('messageCreate', ['data' => $data]);
-        if (!isset($data['author']['id'], $data['content'])) return true;
-        if ($data['author']['id'] == $this->discord_id) return true;
-        if (empty($data['content'])) return true;
-        if (isset($data['author']['bot']) && $data['author']['bot'] === true) return true;
-        if (strpos($data['content'], '<@' . $this->discord_id . '>') === false) return true;
         $content = $data['content'];
         $content = str_replace('<@' . $this->discord_id . '>', '', $content);
         $base_content = $this->prompt['content'];
