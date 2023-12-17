@@ -29,7 +29,6 @@ class Init
     {
         $this->discord = new Discord($this->discord_config);
         $this->discord->on('ready', $callable);
-        $this->discord->run();
         return $this->discord;
     }
 

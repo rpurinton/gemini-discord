@@ -52,5 +52,6 @@ class DiscordClient
             'interaction' => $this->interaction,
             'message' => $this->message,
         ]);
+        $this->discord->run();
     }
 }
