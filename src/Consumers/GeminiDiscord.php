@@ -38,8 +38,8 @@ class GeminiDiscord
     public function init(): void
     {
         $this->log->debug('DiscordClient::init');
-        $this->init->init($this->callback->callback(...));
-        $this->interaction->init($this->message);
+        $discord_id = $this->init->init($this->callback->callback(...));
+        $this->message->init($discord_id);
         $this->callback->init([
             'interaction' => $this->interaction,
             'message' => $this->message,

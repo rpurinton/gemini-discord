@@ -68,7 +68,7 @@ $gemini = new GeminiDiscord([
     'callback' => new Callback([
         'log' => $config->log,
         'sync' => $config->sync,
-        'mq' => $config->mq,
+        'sql' => $config->sql,
     ]),
 ]) or throw new Error('failed to create DiscordClient');
 $gemini->init() or throw new Error('failed to initialize Consumer');

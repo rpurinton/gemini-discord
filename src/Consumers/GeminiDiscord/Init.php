@@ -30,7 +30,6 @@ class Init
         return $this->discord_id;
     }
 
-
     private function getId(): string
     {
         $result = $this->config->sql->query('SELECT `discord_id` FROM `discord_tokens` LIMIT 1');
