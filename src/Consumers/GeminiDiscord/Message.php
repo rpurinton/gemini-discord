@@ -34,8 +34,10 @@ class Message
         $content_string .= $this->createHistoryContent($data, $content_string);
         $content_string .= $this->createSystemMessage();
         $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
+        $this->log->debug('messageCreate', ['prompt' => $this->prompt->toJson()]);
         $response = $this->gemini->getResponse($this->prompt->toJson());
         $text = $response->getText();
+        $this->log->debug('messageCreate', ['response' => $text]);
         $this->publishMessageToDiscord($data['channel_id'], $text) or throw new Error('failed to publish message to discord');
         return true;
     }
