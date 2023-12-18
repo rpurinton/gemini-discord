@@ -87,10 +87,6 @@ class Message
         if (isset($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
         if (isset($message['author']['bot']) && $message['author']['bot'] === true) $history_message .= ' [BOT]';
         if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
-        $message["content"] = str_replace("<@{$this->discord_id}>", 'Gemini', $message["content"]);
-        $message["content"] = str_replace("<@!{$this->discord_id}>", 'Gemini', $message["content"]);
-        $message["content"] = str_replace("<@&{$this->discord_id}>", 'Gemini', $message["content"]);
-        foreach ($message['roles'] as $role) $message["content"] = str_replace("<@&{$role['id']}>", '@' . $role['name'], $message["content"]);
         $history_message .= "\n" . $message['content'] . "\n";
         foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (me)' : '' . "\n";
         $history_message .= "\n";
