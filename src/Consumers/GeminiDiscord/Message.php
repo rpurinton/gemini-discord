@@ -8,6 +8,7 @@ use RPurinton\GeminiDiscord\{Log, Error, RabbitMQ\Sync};
 class Message
 {
     const HISTORY_LIMIT = 4096;
+    const DISCORD_QUEUE = 'discord';
     private ?Log $log = null;
     private ?Sync $sync = null;
     private ?GeminiClient $gemini = null;
@@ -108,6 +109,6 @@ class Message
 
     private function publishMessageToDiscord(string $channel_id, string $text): bool
     {
-        return $this->sync->publish('discord', ['op' => 0, 't' => 'MESSAGE_CREATE', 'd' => ['channel_id' => $channel_id, 'content' => $text]]);
+        return $this->sync->publish(self::DISCORD_QUEUE, ['op' => 0, 't' => 'MESSAGE_CREATE', 'd' => ['channel_id' => $channel_id, 'content' => $text]]);
     }
 }

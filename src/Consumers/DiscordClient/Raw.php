@@ -33,6 +33,7 @@ class Raw
         if ($this->heartbeat($message)) return true;
         if (!$this->relevant($message, $discord)) return true;
         if (!$this->allowed($message)) return true;
+        $message->d->channel->broadcastTyping();
         $this->pub->publish(self::GEMINI_QUEUE, $this->getPublishMessage($message, $discord)) or throw new Error('failed to publish message to gemini');
         return true;
     }
