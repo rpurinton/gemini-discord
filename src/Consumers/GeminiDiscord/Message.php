@@ -33,31 +33,36 @@ class Message
     {
         // if we have reached this stage then everything has been validated and it's time to send the message to gemini and return the response to discord
         $this->log->debug('messageCreate', ['data' => $data]);
-        // reverse the message history
-        $history = array_reverse($data['history']);
+        $history = $data['history'];
         $token_count = 0;
         $content = [];
         foreach ($history as $message) {
-            $history_message['id'] = $message['id'];
-            $history_message['time'] = $message['timestamp'];
-            $history_message['author'] = [
-                'id' => $message['author']['id'],
-                'username' => $message['author']['username'],
-                'nick' => $message['member']['nick'] ?? null,
+            $history_message = [
+                'id' => $message['id'],
+                'time' => $message['timestamp'],
+                'author' => [
+                    'id' => $message['author']['id'],
+                    'username' => $message['author']['username'],
+                    'nick' => $message['member']['nick'] ?? null,
+                ],
+                'content' => $message['content'],
+                'reactions' => [],
             ];
-            $history_message['content'] = $message['content'];
-            foreach ($message['reactions'] as $reaction) {
+            foreach ($message['reactions'] as $emoji => $reaction) {
                 $history_message['reactions'][] = [
-                    'e' => $reaction['emoji']['name'],
+                    'e' => $emoji,
                     '#' => $reaction['count'],
                 ];
             };
-            // TODO: count the tokens
-            // TODO: break when max tokens reached
+            $message_json = json_encode($history_message);
+            $json_tokens = $this->prompt->token_count($message_json);
+            if ($token_count + $json_tokens > self::HISTORY_LIMIT) continue;
+            $token_count += $json_tokens;
+            $content[] = $history_message;
         }
         $content = array_reverse($content);
-        // TODO: add the history to the prompt contents
-
+        $content_string = implode("\n", $content);
+        $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
         // send the prompt to gemini
         $response = $this->gemini->getResponse($this->prompt->toJson());
         // send the response to discord
