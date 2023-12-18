@@ -1,6 +1,6 @@
 [Unit]
 Description=gemini-discord Target
-Wants=discord-gemini.service
+Wants=gemini-discord-client.service
 Wants=gemini-discord@1.service
 Wants=gemini-discord@2.service
 Wants=gemini-discord@3.service

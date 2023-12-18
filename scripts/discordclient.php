@@ -28,8 +28,7 @@ try {
     require_once __DIR__ . '/../Composer.php';
     $log = LogFactory::create('DiscordClient-' . $worker_id) or throw new Error('failed to create log');
     set_exception_handler(function ($e) use ($log) {
-        $log->debug($e->getMessage(), ['trace' => $e->getTrace()]);
-        $log->error($e->getMessage());
+        $log->error($e->getMessage(), ['trace' => $e->getTrace()]);
         exit(1);
     });
 } catch (\Exception $e) {

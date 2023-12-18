@@ -3,7 +3,6 @@
 namespace RPurinton\GeminiDiscord\Consumers;
 
 use Discord\Discord;
-use React\Async;
 use RPurinton\GeminiDiscord\{
     Consumers\DiscordClient\Config,
     Consumers\DiscordClient\Init,

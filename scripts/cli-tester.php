@@ -1,36 +1,14 @@
 #!/usr/bin/env php
 <?php
 
-use PHPUnit\Event\Runtime\PHP;
 use RPurinton\GeminiPHP\{GeminiClient, GeminiPrompt};
+use RPurinton\GeminiDiscord\Config;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$projectId = 'ai-project-408017';
-$regionName = 'us-east4';
-$credentialsPath = '/root/.google/ai-project-408017-7382b3944223.json';
-$modelName = 'gemini-pro'; // or 'gemini-pro-vision'
-
-// Initialize the Gemini client
-$client = new GeminiClient($projectId, $regionName, $credentialsPath, $modelName);
-
-// Create a prompt object
-$generationConfig = [
-    'temperature' => 0.986,
-    'topP' => 0.986,
-    'topK' => 39,
-    'maxOutputTokens' => 2048,
-];
-
-$safetySettings = [
-    'category' => 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-    'threshold' => 'BLOCK_NONE'
-];
-
-$tools = [];
-$history = [];
+$client = new GeminiClient(Config::get('gemini'));
+$prompt = new GeminiPrompt(Config::get('prompt'));
 $cli_prompt = 'user> ';
-
 while (true) {
     $input = readline($cli_prompt);
     switch ($input) {
@@ -45,13 +23,12 @@ while (true) {
             echo 'Commands: exit, clear, help' . PHP_EOL;
             break;
         default:
-            $history[] = ['role' => 'user', 'parts' => ['text' => $input]];
-            $prompt = new GeminiPrompt($generationConfig, $history, $safetySettings, $tools);
             echo 'gemini...';
+            $prompt->push(['role' => 'user', 'parts' => ['text' => $input]]);
             $response = $client->getResponse($prompt->toJson());
             $text = $response->getText();
-            $history[] = ['role' => 'assistant', 'parts' => ['text' => $text]];
-            echo "\r                    \rgemini> $text\n";
+            $prompt->push(['role' => 'assistant', 'parts' => ['text' => $text]]);
+            echo "\r       \rgemini> $text\n";
             break;
     }
 }

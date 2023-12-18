@@ -5,8 +5,20 @@ namespace RPurinton\GeminiDiscord;
 
 use React\EventLoop\Loop;
 use RPurinton\GeminiPHP\GeminiClient;
-use RPurinton\GeminiDiscord\RabbitMQ\{Consumer, Sync};
-use RPurinton\GeminiDiscord\Consumers\GeminiDiscord;
+use RPurinton\GeminiDiscord\{
+    RabbitMQ\Consumer,
+    RabbitMQ\Sync,
+    Consumers\GeminiDiscord,
+    Config,
+};
+use RPurinton\GeminiDiscord\Consumers\GeminiDiscord\{
+    GeminiConfig,
+    Init,
+    Interaction,
+    Message,
+    Raw,
+    Callback,
+};
 
 $worker_id = $argv[1] ?? 0;
 
@@ -18,8 +30,7 @@ try {
     require_once __DIR__ . '/../Composer.php';
     $log = LogFactory::create('GeminiClient-' . $worker_id) or throw new Error('failed to create log');
     set_exception_handler(function ($e) use ($log) {
-        $log->debug($e->getMessage(), ['trace' => $e->getTrace()]);
-        $log->error($e->getMessage());
+        $log->error($e->getMessage(), ['trace' => $e->getTrace()]);
         exit(1);
     });
 } catch (\Exception $e) {
@@ -34,14 +45,32 @@ try {
 }
 
 $loop = Loop::get();
-$gemini = new GeminiDiscord([
+$config = new GeminiConfig([
     'log' => $log,
-    'loop' => $loop,
     'mq' => new Consumer($log, $loop),
     'sync' => new Sync($log),
     'sql' => new MySQL($log),
     'gemini' => new GeminiClient(Config::get('gemini'))
 ]) or throw new Error('failed to create Consumer');
+$gemini = new GeminiDiscord([
+    'config' => $config,
+    'init' => new Init($config),
+    'interaction' => new Interaction([
+        'log' => $config->log,
+        'sync' => $config->sync,
+    ]),
+    'message' => new Message($log),
+    'raw' => new Raw([
+        'log' => $config->log,
+        'sql' => $config->sql,
+        'sync' => $config->sync,
+    ]),
+    'callback' => new Callback([
+        'log' => $config->log,
+        'sync' => $config->sync,
+        'mq' => $config->mq,
+    ]),
+]) or throw new Error('failed to create DiscordClient');
 $gemini->init() or throw new Error('failed to initialize Consumer');
 $loop->addSignal(SIGINT, function () use ($loop, $log) {
     $log->info('SIGINT received, exiting...');

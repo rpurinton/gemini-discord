@@ -1,44 +1,43 @@
 <?php
 
-namespace RPurinton\GeminiDiscord\Consumers\DiscordClient;
+namespace RPurinton\GeminiDiscord\Consumers\GeminiDiscord;
 
-use React\EventLoop\LoopInterface;
+use RPurinton\GeminiPHP\GeminiClient;
 use RPurinton\GeminiDiscord\{
     Error,
     Log,
     MySQL,
     RabbitMQ\Consumer,
-    RabbitMQ\Publisher
+    RabbitMQ\Sync,
 };
 
-class Config
+class GeminiConfig
 {
-    public Log $log;
-    public LoopInterface $loop;
-    public Consumer $mq;
-    public Publisher $pub;
-    public MySQL $sql;
-    public ?string $token = null;
+    public ?Log $log = null;
+    public ?Consumer $mq = null;
+    public ?Sync $sync = null;
+    public ?MySQL $sql = null;
+    public ?GeminiClient $gemini = null;
 
     public function __construct(private array $config)
     {
         $this->validateConfig($config);
         $this->log = $config['log'];
-        $this->log->debug('Config::__construct');
-        $this->loop = $config['loop'];
         $this->mq = $config['mq'];
-        $this->pub = $config['pub'];
+        $this->sync = $config['sync'];
         $this->sql = $config['sql'];
+        $this->gemini = $config['gemini'];
+        $this->log->debug('GeminiConfig::construct');
     }
 
     private function validateConfig(array $config): bool
     {
         $requiredKeys = [
             'log' => 'RPurinton\GeminiDiscord\Log',
-            'loop' => 'React\EventLoop\LoopInterface',
             'mq' => 'RPurinton\GeminiDiscord\RabbitMQ\Consumer',
-            'pub' => 'RPurinton\GeminiDiscord\RabbitMQ\Publisher',
-            'sql' => 'RPurinton\GeminiDiscord\MySQL'
+            'sync' => 'RPurinton\GeminiDiscord\RabbitMQ\Sync',
+            'sql' => 'RPurinton\GeminiDiscord\MySQL',
+            'gemini' => 'RPurinton\GeminiPHP\GeminiClient'
         ];
         foreach ($requiredKeys as $key => $class) {
             if (!array_key_exists($key, $config)) throw new Error('missing required key ' . $key);

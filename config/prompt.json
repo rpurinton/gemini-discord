@@ -5,7 +5,7 @@
         "topK": 40,
         "maxOutputTokens": 2048
     },
-    "content": [],
+    "contents": [],
     "safety_settings": [
         {
             "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
