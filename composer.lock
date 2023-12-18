@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b218bc2176c6a170b77c85508daf7624",
+    "content-hash": "c62a7aeab2f231cdd0e7a1033dfbee18",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -2474,16 +2474,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "d99a649a894192238eafcf1ac874ae7611ae8b38"
+                "reference": "171f544233069d964b7c6a06d812ac8a6ad9052c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/d99a649a894192238eafcf1ac874ae7611ae8b38",
-                "reference": "d99a649a894192238eafcf1ac874ae7611ae8b38",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/171f544233069d964b7c6a06d812ac8a6ad9052c",
+                "reference": "171f544233069d964b7c6a06d812ac8a6ad9052c",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.33",
+                "mehrab-wj/tiktoken-php": "^1.0",
                 "php": ">=8.2"
             },
             "require-dev": {
@@ -2512,7 +2513,7 @@
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
                 "source": "https://github.com/rpurinton/gemini-php/tree/master"
             },
-            "time": "2023-12-17T22:53:44+00:00"
+            "time": "2023-12-18T01:01:55+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
