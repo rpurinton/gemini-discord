@@ -81,25 +81,39 @@ class Message
         return ['content' => $result, 'remaining' => [], 'mode' => $mode];
     }
 
-    private function sendMessage(array $message): void
+    private function sendMessage(array $message): bool
     {
         $this->discord->getChannel($message['channel_id'])->sendMessage($this->builder($message));
+        return true;
     }
 
     public function messageCreate(array $message): bool
     {
-        if (!isset($message['content']) || strlen($message['content']) < 2000) {
-            $this->sendMessage($message);
-            return true;
+        if ($this->blankMessage($message)) {
+            return $this->sendMessage(['channel_id' => $message['channel_id'], 'content' => 'No response (possibly censored)']);
         }
+
+        if (empty($message['content']) || strlen($message['content']) < 2000) {
+            return $this->sendMessage($message);
+        }
+
         $content = $message['content'];
-        while (strlen($content)) {
+        while (!empty($content)) {
             $split = $this->splitMessage($content);
             $content = implode($split['mode'] === 'by_char' ? '' : ' ', $split['remaining']);
             $message['content'] = $split['content'];
             $this->sendMessage($message);
         }
+
         return true;
+    }
+
+    public function blankMessage($message): bool
+    {
+        $hasEmbeds = count($message['embeds'] ?? []) > 0;
+        $hasAttachments = count($message['attachments'] ?? []) > 0;
+        $hasContent = strlen($message['content'] ?? '') > 0;
+        return !($hasEmbeds || $hasAttachments || $hasContent);
     }
 
     public function builder($message)
