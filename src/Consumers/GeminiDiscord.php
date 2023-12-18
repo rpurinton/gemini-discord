@@ -35,7 +35,7 @@ class GeminiDiscord
         $this->callback = $config['callback'];
     }
 
-    public function init(): void
+    public function init(): bool
     {
         $this->log->debug('DiscordClient::init');
         $discord_id = $this->init->init($this->callback->callback(...));
@@ -44,5 +44,6 @@ class GeminiDiscord
             'interaction' => $this->interaction,
             'message' => $this->message,
         ]);
+        return true;
     }
 }
