@@ -8,6 +8,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $client = new GeminiClient(Config::get('gemini'));
 $prompt = new GeminiPrompt(Config::get('prompt'));
+$prompt_reset = function () use ($prompt) {
+    $prompt->setContent([['role' => 'assistant', 'parts' => [['text' => 'I am Gemini.']]]]);
+};
+$prompt_reset();
 $cli_prompt = 'user> ';
 while (true) {
     $input = readline($cli_prompt);
@@ -17,7 +21,7 @@ while (true) {
         case 'exit':
             break 2;
         case 'clear':
-            $history = [];
+            $prompt_reset();
             break;
         case 'help':
             echo 'Commands: exit, clear, help' . PHP_EOL;
