@@ -105,8 +105,8 @@ class Message
         return '[SYSTEM]
         
             Expected results: Write one reaction/response from Gemini to this channel. Do not start your message with the timestamp and your name.
+            USe discord formatting techniques (markdown, emojis, etc.) if helpful.
             Just one direct-to-the-point natural continuation of the conversation until you (Gemini) are finished speaking, then stop.
-
         Gemini: ';
     }
 
