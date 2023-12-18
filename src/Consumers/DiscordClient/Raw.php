@@ -52,11 +52,13 @@ class Raw
         if (!isset($message->d->author->id, $message->d->content)) return false;
         if ($message->d->author->id == $discord->id) return false;
         if (empty($message->d->content)) return false;
-        if (isset($message->d->author->bot) && $message->d->author->bot === true) return false;
-
         if (isset($message->d->referenced_message) && $message->d->referenced_message->author->id == $discord->id) return true;
         if (strpos($message->d->content, '<@' . $discord->id . '>') !== false) return true;
-
+        if (strpos($message->d->content, '<@!' . $discord->id . '>') !== false) return true;
+        if (strpos($message->d->content, '<@&' . $discord->id . '>') !== false) return true;
+        if (strpos(strtolower($message->d->content), 'hey gemini') !== false) return true;
+        $bot_roles = $discord->guilds[$message->d->guild_id]->members[$discord->id]->roles;
+        foreach ($bot_roles as $role) if (strpos($message->d->content, '<@&' . $role->id . '>') !== false) return true;
         return false;
     }
 
