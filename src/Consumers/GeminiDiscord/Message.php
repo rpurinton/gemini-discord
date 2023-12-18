@@ -62,6 +62,12 @@ class Message
             $content[] = $history_message;
         }
         $content_string .= implode("\n", array_reverse($content));
+        $content_string .= '[SYSTEM]
+        
+            Expected results: Write one reaction/response from Gemini to this channel. Do not start your message with the timestamp and your name.
+            Just one direct-to-the-point natural continuation of the conversation until you (Gemini) are finished speaking, then stop.
+
+        Gemini: ';
         $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
         $response = $this->gemini->getResponse($this->prompt->toJson());
         $text = $response->getText();
