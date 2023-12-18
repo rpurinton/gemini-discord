@@ -68,8 +68,7 @@ class Message
     {
         $token_count = $this->prompt->token_count($content_string);
         $content = [];
-        $history = $data['history'];
-        foreach ($history as $message_id => $message) {
+        foreach ($data['history'] as $message_id => $message) {
             $history_message = $this->createHistoryMessage($message_id, $message);
             $message_tokens = $this->prompt->token_count($history_message);
             if ($token_count + $message_tokens > self::HISTORY_LIMIT) continue;
@@ -85,7 +84,7 @@ class Message
         $history_message .= $message['timestamp'] . ' ';
         $history_message .= '<@' . $message['author']['id'] . '> ';
         $history_message .= $message['author']['username'];
-        if (!isset($message['member']['nick']) && !is_null($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
+        if (isset($message['member']['nick']) && !is_null($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
         $history_message .= (isset($message['author']['bot']) && $message['author']['bot'] === true) ? ' [AI BOT]' : ' [HUMAN]';
         if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
         $history_message .= "\n" . $message['content'] . "\n";
