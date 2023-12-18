@@ -4,7 +4,7 @@
 namespace RPurinton\GeminiDiscord;
 
 use React\EventLoop\Loop;
-use RPurinton\GeminiPHP\GeminiClient;
+use RPurinton\GeminiPHP\{GeminiClient, GeminiPrompt};
 use RPurinton\GeminiDiscord\{
     RabbitMQ\Consumer,
     RabbitMQ\Sync,
@@ -59,11 +59,11 @@ $gemini = new GeminiDiscord([
         'log' => $config->log,
         'sync' => $config->sync,
     ]),
-    'message' => new Message($log),
-    'raw' => new Raw([
+    'message' => new Message([
         'log' => $config->log,
-        'sql' => $config->sql,
         'sync' => $config->sync,
+        'gemini' => $config->gemini,
+        'prompt' => new GeminiPrompt(Config::get('prompt')),
     ]),
     'callback' => new Callback([
         'log' => $config->log,
