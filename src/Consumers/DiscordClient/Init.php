@@ -20,7 +20,7 @@ class Init
             'token' => $config->token,
             'logger' => $config->log,
             'loop' => $config->loop,
-            'intents' => Intents::getDefaultIntents(),
+            'intents' => Intents::getDefaultIntents() | Intents::GUILD_MEMBERS,
             'loadAllMembers' => true,
         ];
     }
