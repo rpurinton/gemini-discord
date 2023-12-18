@@ -62,7 +62,7 @@ class Message
             $content[] = $history_message;
         }
         $content_string .= implode("\n", array_reverse($content));
-        $content_string .= "Write a single response from Gemini to the channel.";
+        $content_string .= "Write only the response from Gemini to the channel.";
         $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
         $response = $this->gemini->getResponse($this->prompt->toJson());
         $text = $response->getText();
