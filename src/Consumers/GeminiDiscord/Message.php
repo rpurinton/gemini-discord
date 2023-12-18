@@ -7,6 +7,7 @@ use RPurinton\GeminiDiscord\{Log, Error, RabbitMQ\Sync};
 
 class Message
 {
+    const HISTORY_LIMIT = 4096;
     private ?Log $log = null;
     private ?Sync $sync = null;
     private ?GeminiClient $gemini = null;
@@ -30,22 +31,40 @@ class Message
 
     public function messageCreate(array $data): bool
     {
+        // if we have reached this stage then everything has been validated and it's time to send the message to gemini and return the response to discord
         $this->log->debug('messageCreate', ['data' => $data]);
-        $content = $data['content'];
-        $content = str_replace('<@' . $this->discord_id . '>', '', $content);
-        $this->prompt->push(['role' => 'user', 'parts' => ['text' => $content]]);
+        // reverse the message history
+        $history = array_reverse($data['history']);
+        $token_count = 0;
+        $content = [];
+        foreach ($history as $message) {
+            $history_message['id'] = $message['id'];
+            $history_message['time'] = $message['timestamp'];
+            $history_message['author'] = [
+                'id' => $message['author']['id'],
+                'username' => $message['author']['username'],
+                'nick' => $message['member']['nick'] ?? null,
+            ];
+            $history_message['content'] = $message['content'];
+            foreach ($message['reactions'] as $reaction) {
+                $history_message['reactions'][] = [
+                    'e' => $reaction['emoji']['name'],
+                    '#' => $reaction['count'],
+                ];
+            };
+            // TODO: count the tokens
+            // TODO: break when max tokens reached
+        }
+        $content = array_reverse($content);
+        // TODO: add the history to the prompt contents
+
+        // send the prompt to gemini
         $response = $this->gemini->getResponse($this->prompt->toJson());
+        // send the response to discord
         $text = $response->getText();
-        $this->log->debug('messageCreate', ['text' => $text]);
-        if (empty($text)) return true;
-        $this->prompt->push(['role' => 'assistant', 'parts' => ['text' => $text]]);
         $this->sync->publish('discord', [
-            'op' => 0, // DISPATCH
-            't' => 'MESSAGE_CREATE',
-            'd' => [
-                'channel_id' => $data['channel_id'],
-                'content' => $text,
-            ]
+            'op' => 0, 't' => 'MESSAGE_CREATE',
+            'd' => ['channel_id' => $data['channel_id'], 'content' => $text]
         ]) or throw new Error('failed to publish message to discord');
         return true;
     }
