@@ -50,7 +50,7 @@ class Message
         $channel_name = $data['channel_name'];
         $channel_topic = $data['channel_topic'];
         $roles = '';
-        foreach ($data['roles'] as $role) $roles .= '<@&' . $role['id'] . '> @' . $role['name'] . "\n";
+        foreach ($data['guild_roles'] as $role) $roles .= '<@&' . $role['id'] . '> @' . $role['name'] . "\n";
         $my_roles = '';
         foreach ($data['bot_roles'] as $role) $my_roles .= '<@&' . $role['id'] . '> @' . $role['name'] . "\n";
         return 'Current Time: ' . date('Y-m-d H:i:s T') . "\n" .
@@ -83,13 +83,16 @@ class Message
     {
         $history_message = "[ Message $message_id ]\n";
         $history_message .= $message['timestamp'] . ' ';
+        $history_message .= '<@' . $message['author']['id'] . '> ';
         $history_message .= $message['author']['username'];
-        if (!is_null($message['member']['nick'])) $history_message .= ' ( Nick: ' . $message['member']['nick'] . ' )';
+        if (!isset($message['member']['nick']) && !is_null($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
         $history_message .= (isset($message['author']['bot']) && $message['author']['bot'] === true) ? ' [AI BOT]' : ' [HUMAN]';
         if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
         $history_message .= "\n" . $message['content'] . "\n";
-        if (count($message['reactions'])) $history_message .= "Reactions:\n";
-        foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (gemini)' : '' . ' ';
+        if (count($message['reactions'])) {
+            $history_message .= "Reactions:\n";
+            foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (gemini)' : '' . ' ';
+        }
         $history_message .= "\n";
         return $history_message;
     }
