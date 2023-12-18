@@ -75,23 +75,27 @@ class Message
         }
         return implode("\n", array_reverse($content));
     }
-
     private function createHistoryMessage(string $message_id, array $message): string
     {
-        $history_message = "[ Start $message_id ]\n";
-        $history_message .= $message['timestamp'] . ' ';
-        $history_message .= '<@' . $message['author']['id'] . '> ';
-        $history_message .= $message['author']['username'];
-        if (isset($message['author']['nick']) && !is_null($message['author']['nick'])) $history_message .= ' (' . $message['author']['nick'] . ')';
-        $history_message .= (isset($message['author']['bot']) && $message['author']['bot'] === true) ? ' [AI BOT]' : ' [HUMAN]';
-        if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
-        $history_message .= "\n" . $message['content'] . "\n";
-        if (count($message['reactions'])) {
-            $history_message .= "Reactions:\n";
-            foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (gemini)' : '' . ' ';
-        }
-        $history_message .= "\n[ End $message_id ]\n";
-        return $history_message;
+        $nick = $message['member']['nick'] ? " ({$message['member']['nick']})" : '';
+        $bot = $message['author']['bot'] ? ' [AI BOT]' : ' [HUMAN]';
+        $reply = $message['referenced_message'] ? "\nIn Reply To: {$message['referenced_message']['id']}" : '';
+        $reactions = count($message['reactions']) ? "\nReactions:\n" . $this->formatReactions($message['reactions']) : '';
+
+        return <<<EOT
+    [ Start $message_id ]
+    {$message['timestamp']} <@{$message['author']['id']}> {$message['author']['username']}{$nick}{$bot}{$reply}
+    {$message['content']}
+    {$reactions}
+    [ End $message_id ]
+    EOT;
+    }
+
+    private function formatReactions(array $reactions): string
+    {
+        return implode(' ', array_map(function ($emoji, $reaction) {
+            return $emoji . '(' . $reaction['count'] . ')' . ($reaction['me'] ? ' (you)' : '');
+        }, array_keys($reactions), $reactions));
     }
 
     private function createSystemMessage(): string

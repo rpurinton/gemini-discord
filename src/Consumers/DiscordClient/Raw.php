@@ -77,17 +77,12 @@ class Raw
         $channel = $guild->channels[$message->d->channel_id];
         $author = $guild->members[$message->d->author->id];
         $publish_message = json_decode(json_encode($message), true);
-        $history = Async\await($channel->getMessageHistory(['limit' => 100]));
-        foreach ($history as $message_id => $message) {
-            $decoded = json_decode(json_encode($message), true);
-            $decoded['author']['nick'] = $author->nick;
-            $publish_message['d']['history'][$message_id] = $decoded;
-        }
         $publish_message['d']['guild_name'] = $guild->name;
         $publish_message['d']['guild_roles'] = $guild->roles;
         $publish_message['d']['channel_name'] = $channel->name;
         $publish_message['d']['channel_topic'] = $channel->topic;
         $publish_message['d']['bot_roles'] = $guild->members[$discord->id]->roles;
+        $publish_message['d']['history'] = Async\await($channel->getMessageHistory(['limit' => 100]));
         return $publish_message;
     }
 }
