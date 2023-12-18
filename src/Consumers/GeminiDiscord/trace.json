@@ -1,0 +1,87 @@
+{
+    "trace": [
+        {
+            "file": "/var/www/gemini-discord/src/Consumers/GeminiDiscord/Callback.php",
+            "line": 57,
+            "function": "messageCreate",
+            "class": "RPurinton\\GeminiDiscord\\Consumers\\GeminiDiscord\\Message",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/src/Consumers/GeminiDiscord/Callback.php",
+            "line": 45,
+            "function": "route",
+            "class": "RPurinton\\GeminiDiscord\\Consumers\\GeminiDiscord\\Callback",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/bunny/bunny/src/Bunny/Channel.php",
+            "line": 743,
+            "function": "callback",
+            "class": "RPurinton\\GeminiDiscord\\Consumers\\GeminiDiscord\\Callback",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/bunny/bunny/src/Bunny/Channel.php",
+            "line": 692,
+            "function": "onBodyComplete",
+            "class": "Bunny\\Channel",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/bunny/bunny/src/Bunny/Async/Client.php",
+            "line": 320,
+            "function": "onFrameReceived",
+            "class": "Bunny\\Channel",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/react/event-loop/src/ExtUvLoop.php",
+            "line": 310,
+            "function": "onDataAvailable",
+            "class": "Bunny\\Async\\Client",
+            "type": "->"
+        },
+        {
+            "function": "React\\EventLoop\\{closure}",
+            "class": "React\\EventLoop\\ExtUvLoop",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/react/event-loop/src/ExtUvLoop.php",
+            "line": 232,
+            "function": "uv_run"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/react/event-loop/src/Loop.php",
+            "line": 250,
+            "function": "run",
+            "class": "React\\EventLoop\\ExtUvLoop",
+            "type": "->"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/react/async/src/SimpleFiber.php",
+            "line": 61,
+            "function": "run",
+            "class": "React\\EventLoop\\Loop",
+            "type": "::"
+        },
+        {
+            "function": "React\\Async\\{closure}",
+            "class": "React\\Async\\SimpleFiber",
+            "type": "::"
+        },
+        {
+            "file": "/var/www/gemini-discord/vendor/react/async/src/SimpleFiber.php",
+            "line": 66,
+            "function": "resume",
+            "class": "Fiber",
+            "type": "->"
+        },
+        {
+            "function": "React\\Async\\{closure}",
+            "class": "React\\Async\\SimpleFiber",
+            "type": "::"
+        }
+    ]
+}

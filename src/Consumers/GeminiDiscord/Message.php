@@ -33,7 +33,6 @@ class Message
         $this->log->debug('messageCreate', ['data' => $data]);
         $content = $data['content'];
         $content = str_replace('<@' . $this->discord_id . '>', '', $content);
-        $base_content = $this->prompt['contents'];
         $this->prompt->push(['role' => 'user', 'parts' => ['text' => $content]]);
         $response = $this->gemini->getResponse($this->prompt->toJson());
         $text = $response->getText();
