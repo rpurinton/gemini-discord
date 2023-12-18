@@ -41,6 +41,7 @@ class Message
             $history_message .= $message['timestamp'] . ' ';
             $history_message .= $message['author']['username'];
             if (isset($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
+            $message["content"] = str_replace("<@{$this->discord_id}>", 'Gemini', $message["content"]);
             $history_message .= "\n" . $message['content'] . "\n";
             foreach ($message['reactions'] as $emoji => $reaction) {
                 $history_message .= $emoji . $reaction['count'] . ' ';
