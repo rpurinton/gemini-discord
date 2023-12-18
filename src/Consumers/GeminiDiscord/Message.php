@@ -81,14 +81,15 @@ class Message
 
     private function createHistoryMessage(string $message_id, array $message): string
     {
-        $history_message = "[Message ID $message_id]\n";
+        $history_message = "[ Message $message_id ]\n";
         $history_message .= $message['timestamp'] . ' ';
         $history_message .= $message['author']['username'];
         if (isset($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
         if (isset($message['author']['bot']) && $message['author']['bot'] === true) $history_message .= ' [BOT]';
         if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
         $history_message .= "\n" . $message['content'] . "\n";
-        foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (me)' : '' . "\n";
+        if (count($message['reactions'])) $history_message .= "Reactions:\n";
+        foreach ($message['reactions'] as $emoji => $reaction) $history_message .= $emoji . $reaction['count'] . ' ' . $reaction['me'] ? ' (gemini)' : '' . ' ';
         $history_message .= "\n";
         return $history_message;
     }
