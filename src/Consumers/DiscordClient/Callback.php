@@ -68,11 +68,10 @@ class Callback
     }
 
 
-    public function callback(RabbitMessage $message, Channel $channel): bool // from RabbitMQ\Consumer::connect
+    public function callback(RabbitMessage $message, Channel $channel): bool
     {
         $content = json_decode($message->content, true);
-        if ($content['op'] === 11) return true;
-        else $this->route($content) or throw new Error('failed to route message');
+        $this->route($content) or throw new Error('failed to route message');
         $channel->ack($message);
         return true;
     }
@@ -85,7 +84,8 @@ class Callback
                 return $this->message->messageCreate($content['d']);
             case 'INTERACTION_HANDLE':
                 return $this->interaction->interactionHandle($content['d']);
+            default:
+                return true;
         }
-        return true;
     }
 }
