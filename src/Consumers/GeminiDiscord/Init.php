@@ -15,18 +15,17 @@ class Init
 
     public function __construct(private GeminiConfig $config)
     {
-        $config->log->debug('Init::__construct');
     }
 
     public function init(callable $callback): int|bool
     {
-        $this->config->log->debug('GeminiClient::init');
         $this->discord_id = $this->getId();
         $private_queue = $this->config->log->getName();
         $this->config->sync->queueDeclare(self::GEMINI_QUEUE, false) or throw new Error('failed to declare gemini queue');
         $this->config->sync->queueDeclare($private_queue, true) or throw new Error('failed to declare private queue');
         $this->config->mq->consume(self::GEMINI_QUEUE, $callback) or throw new Error('failed to connect to gemini queue');
         $this->config->mq->consume($private_queue, $callback) or throw new Error('failed to connect to private queue');
+        $this->config->log->info('GeminiDiscord is ready!');
         return $this->discord_id;
     }
 

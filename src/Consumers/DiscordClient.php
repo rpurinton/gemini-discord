@@ -31,7 +31,6 @@ class DiscordClient
     {
         $this->config = $config['config'];
         $this->log = $this->config->log;
-        $this->log->debug('DiscordClient::__construct');
         $this->init = $config['init'];
         $this->message = $config['message'];
         $this->interaction = $config['interaction'];
@@ -41,7 +40,6 @@ class DiscordClient
 
     public function init(): void
     {
-        $this->log->debug('DiscordClient::init');
         $this->discord = $this->init->init($this->callback->ready(...));
         $this->message->init($this->discord);
         $this->interaction->init($this->message);

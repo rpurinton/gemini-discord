@@ -24,12 +24,10 @@ class Raw
         $this->log = $config['log'];
         $this->sql = $config['sql'];
         $this->pub = $config['pub'];
-        $this->log->debug('construct');
     }
 
     public function raw(stdClass $message, Discord $discord): bool // from Discord\Discord::onRaw
     {
-        $this->log->debug('raw', ['message' => $message]);
         if ($this->heartbeat($message)) return true;
         if (!$this->relevant($message, $discord)) return true;
         if (!$this->allowed($message)) return true;

@@ -22,18 +22,15 @@ class Interaction
     {
         $this->log = $config['log'];
         $this->pub = $config['pub'];
-        $this->log->debug('Interaction::__construct');
     }
 
     public function init(Message $message): void
     {
-        $this->log->debug('Interaction::init');
         $this->message = $message;
     }
 
     public function interaction(DiscordInteraction $interaction): void
     {
-        $this->log->debug('interaction', ['interaction' => $interaction]);
         $this->interactions[$interaction->id] = $interaction;
         $message = [
             'op' => 0,
@@ -46,7 +43,6 @@ class Interaction
 
     public function interactionHandle(array $interactionReply): bool
     {
-        $this->log->debug('interactionHandle', ['interaction' => $interactionReply]);
         $this->interactions[$interactionReply['id']]?->updateOriginalResponse($this->message->builder($interactionReply)) or throw new Error('failed to update original response');
         unset($this->interactions[$interactionReply['id']]);
         return true;

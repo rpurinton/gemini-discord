@@ -24,7 +24,6 @@ class Config
     {
         $this->validateConfig($config);
         $this->log = $config['log'];
-        $this->log->debug('Config::__construct');
         $this->loop = $config['loop'];
         $this->mq = $config['mq'];
         $this->pub = $config['pub'];

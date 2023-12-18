@@ -28,7 +28,6 @@ class GeminiDiscord
     {
         $this->config = $config['config'];
         $this->log = $this->config->log;
-        $this->log->debug('DiscordClient::__construct');
         $this->init = $config['init'];
         $this->message = $config['message'];
         $this->interaction = $config['interaction'];
@@ -37,7 +36,6 @@ class GeminiDiscord
 
     public function init(): bool
     {
-        $this->log->debug('DiscordClient::init');
         $discord_id = $this->init->init($this->callback->callback(...));
         $this->message->init($discord_id);
         $this->callback->init([

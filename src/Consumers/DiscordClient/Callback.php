@@ -37,12 +37,10 @@ class Callback
         $this->log = $config['log'];
         $this->pub = $config['pub'];
         $this->mq = $config['mq'];
-        $this->log->debug('construct');
     }
 
     public function init(array $config): void
     {
-        $this->log->debug('init');
         $this->discord = $config['discord'];
         $this->raw = $config['raw'];
         $this->interaction = $config['interaction'];
@@ -66,14 +64,14 @@ class Callback
             $this->discord->listenCommand($command['name'], $this->interaction->interaction(...));
         }
         $this->discord->on('raw', $this->raw->raw(...));
+        $this->log->info('DiscordClient is ready!');
     }
 
 
     public function callback(RabbitMessage $message, Channel $channel): bool // from RabbitMQ\Consumer::connect
     {
-        $this->log->debug('callback', [$message->content]);
         $content = json_decode($message->content, true);
-        if ($content['op'] === 11) $this->log->debug('heartbeat circuit complete');
+        if ($content['op'] === 11) return true;
         else $this->route($content) or throw new Error('failed to route message');
         $channel->ack($message);
         return true;
@@ -81,7 +79,7 @@ class Callback
 
     private function route(array $content): bool
     {
-        $this->log->debug('route', [$content['t']]);
+        $this->log->debug('route', ['op' => $content['op'], 't' => $content['t']]);
         switch ($content['t']) {
             case 'MESSAGE_CREATE':
                 return $this->message->messageCreate($content['d']);

@@ -11,12 +11,10 @@ class Message
 
     public function __construct(private Log $log)
     {
-        $this->log->debug('Message::__construct');
     }
 
     public function init(Discord $discord): void
     {
-        $this->log->debug('Message::init');
         $this->discord = $discord;
     }
 
@@ -90,7 +88,6 @@ class Message
 
     public function messageCreate(array $message): bool
     {
-        $this->log->debug('messageCreate', ['message' => $message]);
         if (!isset($message['content']) || strlen($message['content']) < 2000) {
             $this->sendMessage($message);
             return true;

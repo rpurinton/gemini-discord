@@ -27,7 +27,6 @@ class GeminiConfig
         $this->sync = $config['sync'];
         $this->sql = $config['sql'];
         $this->gemini = $config['gemini'];
-        $this->log->debug('GeminiConfig::construct');
     }
 
     private function validateConfig(array $config): bool

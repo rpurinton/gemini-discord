@@ -15,7 +15,6 @@ class Init
 
     public function __construct(private Config $config)
     {
-        $config->log->debug('Init::__construct');
         $config->token = $this->getToken();
         $this->discord_config = [
             'token' => $config->token,
@@ -34,7 +33,6 @@ class Init
 
     private function getToken(): string
     {
-        $this->config->log->debug('getToken');
         $result = $this->config->sql->query('SELECT `discord_token` FROM `discord_tokens` LIMIT 1');
         if ($result === false) throw new Error('failed to get discord_token');
         if ($result->num_rows === 0) throw new Error('no discord_token found');
@@ -46,7 +44,6 @@ class Init
 
     private function validateToken($token)
     {
-        $this->config->log->debug('validateToken');
         if (!is_string($token)) throw new Error('token is not a string');
         if (strlen($token) === 0) throw new Error('token is empty');
         if (strlen($token) !== 72) throw new Error('token is not 72 characters');

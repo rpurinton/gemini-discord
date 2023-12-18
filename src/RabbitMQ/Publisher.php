@@ -8,12 +8,12 @@ use stdClass;
 
 class Publisher
 {
+    const BROADCAST_QUEUE = 'broadcast';
     protected ?Client $client = null;
     protected ?Channel $channel = null;
 
     public function __construct(protected Log $log)
     {
-        $this->log->debug('Publisher::__construct');
         $this->client = new Client(Config::get('rabbitmq')) or throw new Error('Failed to establish the client');
         $this->client = $this->client->connect() or throw new Error('Failed to establish the connection');
         $this->channel = $this->client->channel() or throw new Error('Failed to establish the channel');
@@ -28,12 +28,11 @@ class Publisher
 
     public function publish(string $queue, array|stdClass $data): bool
     {
-        $this->log->debug('Publisher::publish', ['queue' => $queue, 'data' => $data]);
         $result = false;
         try {
             $exchange = '';
-            if ($queue === 'broadcast') {
-                $exchange = 'broadcast';
+            if ($queue === self::BROADCAST_QUEUE) {
+                $exchange = self::BROADCAST_QUEUE;
                 $queue = '';
             } else $this->queueDeclare($queue);
             $result = $this->channel->publish(json_encode($data), [], $exchange, $queue) or throw new Error('Failed to publish the message');
@@ -51,7 +50,6 @@ class Publisher
 
     public function disconnect(): bool
     {
-        $this->log->debug('Publisher::disconnect');
         if (isset($this->channel) && $this->channel) {
             $this->channel->close();
         }
@@ -63,7 +61,6 @@ class Publisher
 
     public function __destruct()
     {
-        $this->log->debug('Publisher::__destruct');
         $this->disconnect() or throw new Error('Failed to disconnect from RabbitMQ');
     }
 }

@@ -18,7 +18,6 @@ class Message
     public function __construct(array $config)
     {
         $this->log = $config['log'];
-        $this->log->debug('Message::__construct');
         $this->sync = $config['sync'];
         $this->gemini = $config['gemini'];
         $this->prompt = $config['prompt'];
@@ -26,13 +25,11 @@ class Message
 
     public function init(int $discord_id): void
     {
-        $this->log->debug('Message::init', ['discord_id' => $discord_id]);
         $this->discord_id = $discord_id;
     }
 
     public function messageCreate(array $data): bool
     {
-        $this->log->debug('messageCreate', ['data' => $data]);
         $content_string = $this->createContentString($data);
         $content_string .= $this->createHistoryContent($data, $content_string);
         $content_string .= $this->createSystemMessage();

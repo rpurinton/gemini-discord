@@ -19,15 +19,12 @@ class Interaction
     public function __construct(array $config)
     {
         $this->log = $config['log'];
-        $this->log->debug('Interaction::__construct');
         $this->sync = $config['sync'];
         $this->locales = Locales::get();
     }
 
     public function interactionHandle(array $data): bool
     {
-        $this->log->debug('interactionHandle', ['data' => $data]);
-        $locale = $this->locales[$data['locale'] ?? 'en-US'] ?? $this->locales['en-US'];
         switch ($data['data']['name']) {
             case 'help':
                 return $this->help($data);
@@ -43,7 +40,6 @@ class Interaction
 
     private function interactionReply(int $id, string $content): bool
     {
-        $this->log->debug('interactionReply', ['id' => $id, 'content' => $content]);
         $this->sync->publish(self::DISCORD_QUEUE, [
             'op' => 0, 't' => 'INTERACTION_HANDLE',
             'd' => ['id' => $id, 'content' => $content],

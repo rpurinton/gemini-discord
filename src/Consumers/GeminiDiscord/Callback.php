@@ -27,21 +27,18 @@ class Callback
     public function __construct(array $config)
     {
         $this->log = $config['log'];
-        $this->log->debug('construct');
         $this->sync = $config['sync'];
         $this->sql = $config['sql'];
     }
 
     public function init(array $config): void
     {
-        $this->log->debug('init');
         $this->interaction = $config['interaction'];
         $this->message = $config['message'];
     }
 
     public function callback(RabbitMessage $message, Channel $channel): bool
     {
-        $this->log->debug('callback', [$message->content]);
         $this->route(json_decode($message->content, true)) or throw new Error('failed to route message');
         $channel->ack($message);
         return true;
@@ -49,7 +46,7 @@ class Callback
 
     private function route(array $content): bool
     {
-        $this->log->debug('route', [$content['t']]);
+        $this->log->debug('route', ['op' => $content['op'], 't' => $content['t']]);
         if ($content['op'] === 11) return $this->heartbeat($content);
         switch ($content['t']) {
             case 'MESSAGE_CREATE':
@@ -63,7 +60,6 @@ class Callback
 
     private function heartbeat(array $content): bool
     {
-        $this->log->debug('heartbeat', [$content]);
         $this->sql->query('SELECT 1'); // keep MySQL connection alive
         $this->sync->publish(self::DISCORD_QUEUE, $content) or throw new Error('failed to publish message to discord');
         return true;

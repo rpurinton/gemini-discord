@@ -10,7 +10,6 @@ class LogFactory
     static function create($name): Log
     {
         $log = self::pushHandlers(self::createLogger($name), self::getConfigs());
-        $log->debug('Log created');
         return $log;
     }
 
