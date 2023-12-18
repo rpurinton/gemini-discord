@@ -36,36 +36,24 @@ class Message
         $history = $data['history'];
         $token_count = 0;
         $content = [];
-        foreach ($history as $message) {
-            $history_message = [
-                'id' => $message['id'],
-                'time' => $message['timestamp'],
-                'author' => [
-                    'id' => $message['author']['id'],
-                    'username' => $message['author']['username'],
-                    'nick' => $message['member']['nick'] ?? null,
-                ],
-                'content' => $message['content'],
-                'reactions' => [],
-            ];
+        foreach ($history as $message_id => $message) {
+            $history_message = "[Message ID $message_id]\n";
+            $history_message .= $message['timestamp'] . ' ';
+            $history_message .= $message['author']['username'];
+            if (isset($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
+            $history_message .= "\n" . $message['content'] . "\n";
             foreach ($message['reactions'] as $emoji => $reaction) {
-                $history_message['reactions'][] = [
-                    'e' => $emoji,
-                    '#' => $reaction['count'],
-                ];
+                $history_message .= $emoji . $reaction['count'] . ' ';
             };
-            $message_json = json_encode($history_message);
-            $json_tokens = $this->prompt->token_count($message_json);
-            if ($token_count + $json_tokens > self::HISTORY_LIMIT) continue;
-            $token_count += $json_tokens;
+            $history_message .= "\n";
+            $message_tokens = $this->prompt->token_count($history_message);
+            if ($token_count + $message_tokens > self::HISTORY_LIMIT) continue;
+            $token_count += $message_tokens;
             $content[] = $history_message;
         }
-        $content = array_reverse($content);
-        $content_string = implode("\n", $content);
+        $content_string = implode("\n", array_reverse($content));
         $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
-        // send the prompt to gemini
         $response = $this->gemini->getResponse($this->prompt->toJson());
-        // send the response to discord
         $text = $response->getText();
         $this->sync->publish('discord', [
             'op' => 0, 't' => 'MESSAGE_CREATE',
