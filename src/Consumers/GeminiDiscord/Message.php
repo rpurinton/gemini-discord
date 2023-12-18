@@ -84,8 +84,8 @@ class Message
         $history_message = "[ Message $message_id ]\n";
         $history_message .= $message['timestamp'] . ' ';
         $history_message .= $message['author']['username'];
-        if (isset($message['member']['nick'])) $history_message .= ' (' . $message['member']['nick'] . ')';
-        if (isset($message['author']['bot']) && $message['author']['bot'] === true) $history_message .= ' [BOT]';
+        if (!is_null($message['member']['nick'])) $history_message .= ' ( Nick: ' . $message['member']['nick'] . ' )';
+        $history_message .= (isset($message['author']['bot']) && $message['author']['bot'] === true) ? ' [AI BOT]' : ' [HUMAN]';
         if (!is_null($message['referenced_message'])) $history_message .= "\nIn Reply To: " . $message['referenced_message']['id'] . "\n";
         $history_message .= "\n" . $message['content'] . "\n";
         if (count($message['reactions'])) $history_message .= "Reactions:\n";
