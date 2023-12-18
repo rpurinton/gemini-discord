@@ -49,9 +49,16 @@ class Message
         $channel_id = $data['channel_id'];
         $channel_name = $data['channel_name'];
         $channel_topic = $data['channel_topic'];
+        $roles = '';
+        foreach ($data['roles'] as $role) $roles .= '<@&' . $role['id'] . '> @' . $role['name'] . "\n";
+        $my_roles = '';
+        foreach ($data['bot_roles'] as $role) $my_roles .= '<@&' . $role['id'] . '> @' . $role['name'] . "\n";
         return 'Current Time: ' . date('Y-m-d H:i:s T') . "\n" .
             'Discord Server ID: ' . $guild_id . "\n" .
             'Server Name: ' . $guild_name . "\n" .
+            "Roles:\n" . $roles . "\n" .
+            'My User ID: ' . $this->discord_id . "\n" .
+            "My Roles:\n" . $my_roles . "\n" .
             'Channel ID: ' . $channel_id . "\n" .
             'Channel Name: ' . $channel_name . "\n" .
             'Channel Topic: ' . $channel_topic . "\n\n";
