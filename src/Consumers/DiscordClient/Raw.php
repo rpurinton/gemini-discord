@@ -55,10 +55,15 @@ class Raw
         if (strpos($message->d->content, '<@' . $discord->id . '>') !== false) return true;
         if (strpos($message->d->content, '<@!' . $discord->id . '>') !== false) return true;
         if (strpos($message->d->content, '<@&' . $discord->id . '>') !== false) return true;
-        if (strpos(strtolower($message->d->content), 'hey gemini') !== false) return true;
+        if (strpos(strtolower($this->stripCommas($message->d->content)), 'hey gemini') !== false) return true;
         $bot_roles = $discord->guilds[$message->d->guild_id]->members[$discord->id]->roles;
         foreach ($bot_roles as $role) if (strpos($message->d->content, '<@&' . $role->id . '>') !== false) return true;
         return false;
+    }
+
+    private function stripCommas(string $content): string
+    {
+        return str_replace(',', '', $content);
     }
 
     private function allowed(stdClass $message): bool

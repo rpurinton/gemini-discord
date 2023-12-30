@@ -119,6 +119,7 @@ class Message
     public function builder($message)
     {
         $builder = \Discord\Builders\MessageBuilder::new();
+        $builder->setTts(true);
         $this->setContent($builder, $message);
         $this->addFileFromContent($builder, $message);
         $this->addAttachments($builder, $message);
