@@ -1,8 +1,8 @@
 {
     "generation_config": {
-        "temperature": 1.0,
-        "topP": 1.0,
-        "topK": 40,
+        "temperature": 0.986,
+        "topP": 0.986,
+        "topK": 39,
         "maxOutputTokens": 2048
     },
     "contents": [
