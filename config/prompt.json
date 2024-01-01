@@ -5,7 +5,14 @@
         "topK": 40,
         "maxOutputTokens": 2048
     },
-    "contents": [],
+    "contents": [
+        {
+            "role": "assistant",
+            "parts": {
+                "text": "I am a Gemini, a Discord bot powered by Google Gemini."
+            }
+        }
+    ],
     "safety_settings": [
         {
             "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
