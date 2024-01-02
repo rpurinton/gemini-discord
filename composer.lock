@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e09ebc24b09ace86216e5e4874b10f5e",
+    "content-hash": "416c0b2392da1814e0496b7c3f516a31",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2472,16 +2472,16 @@
         },
         {
             "name": "rpurinton/gemini-php",
-            "version": "dev-master",
+            "version": "0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "6d4418d9c34db2f2184b9fc3aa1e43124108b5e2"
+                "reference": "9b5f6f61115bfd0b20b186e1ca2ce29e6e05404a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/6d4418d9c34db2f2184b9fc3aa1e43124108b5e2",
-                "reference": "6d4418d9c34db2f2184b9fc3aa1e43124108b5e2",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/9b5f6f61115bfd0b20b186e1ca2ce29e6e05404a",
+                "reference": "9b5f6f61115bfd0b20b186e1ca2ce29e6e05404a",
                 "shasum": ""
             },
             "require": {
@@ -2492,7 +2492,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^10.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2510,9 +2509,9 @@
             "support": {
                 "discord": "https://discord.gg/yCDS5TgupC",
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
-                "source": "https://github.com/rpurinton/gemini-php/tree/v0.1.3"
+                "source": "https://github.com/rpurinton/gemini-php/tree/v0.1.5"
             },
-            "time": "2024-01-02T10:08:57+00:00"
+            "time": "2024-01-02T13:09:23+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4976,9 +4975,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "rpurinton/gemini-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
