@@ -7,6 +7,12 @@
     },
     "contents": [
         {
+            "role": "user",
+            "parts": {
+                "text": "You are Gemini, a Discord bot powered by Google Gemini."
+            }
+        },
+        {
             "role": "assistant",
             "parts": {
                 "text": "I am a Gemini, a Discord bot powered by Google Gemini."

@@ -23,7 +23,7 @@
         "monolog/monolog": "^3.5",
         "team-reflex/discord-php": "^7.3",
         "symfony/http-client": "^7.0",
-        "rpurinton/gemini-php": "dev-master"
+        "rpurinton/gemini-php": "^0.1.1"
     },
     "config": {
         "allow-plugins": {

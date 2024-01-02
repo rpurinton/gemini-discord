@@ -8,17 +8,15 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $client = new GeminiClient(Config::get('gemini'));
 $prompt = new GeminiPrompt(Config::get('prompt'));
-$prompt->setContent([]);
-$cli_prompt = 'user> ';
 while (true) {
-    $input = readline($cli_prompt);
+    $input = readline('user> ');
     switch ($input) {
         case '':
             break;
         case 'exit':
             break 2;
         case 'clear':
-            $prompt->setContent([]);
+            $prompt->resetContent();
             break;
         case 'help':
             echo 'Commands: exit, clear, help' . PHP_EOL;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c62a7aeab2f231cdd0e7a1033dfbee18",
+    "content-hash": "556ebd4db7758953648b6a5b185fdeb5",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -2470,27 +2470,26 @@
         },
         {
             "name": "rpurinton/gemini-php",
-            "version": "dev-master",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "8e972e5362d08cd33286a65491101a72293d2898"
+                "reference": "a7c5fcd42199ca4572f7a570f9aec1e2cf5f2ff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/8e972e5362d08cd33286a65491101a72293d2898",
-                "reference": "8e972e5362d08cd33286a65491101a72293d2898",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/a7c5fcd42199ca4572f7a570f9aec1e2cf5f2ff6",
+                "reference": "a7c5fcd42199ca4572f7a570f9aec1e2cf5f2ff6",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.33",
                 "mehrab-wj/tiktoken-php": "^1.0",
-                "php": ">=8.2"
+                "php": "^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2498,22 +2497,19 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
             "authors": [
                 {
                     "name": "Russell Purinton",
                     "email": "russell.purinton@gmail.com"
                 }
             ],
-            "description": "Simple PHP Client for Google Gemini / Vertex AI",
+            "description": "A PHP client for the Gemini API.",
             "support": {
                 "discord": "https://discord.gg/yCDS5TgupC",
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
-                "source": "https://github.com/rpurinton/gemini-php/tree/master"
+                "source": "https://github.com/rpurinton/gemini-php/tree/v0.1.1"
             },
-            "time": "2024-01-01T21:22:22+00:00"
+            "time": "2024-01-02T01:29:29+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4978,8 +4974,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bunny/bunny": 20,
-        "rpurinton/gemini-php": 20
+        "bunny/bunny": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
