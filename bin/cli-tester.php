@@ -32,6 +32,6 @@ while (true) {
                 break;
         }
     } catch (\Exception $e) {
-        echo 'error> ' . $e->getMessage() . PHP_EOL;
+        echo "\rerror> {$e->getMessage()}\n";
     }
 }
