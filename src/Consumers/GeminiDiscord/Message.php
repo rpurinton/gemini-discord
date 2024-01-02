@@ -33,7 +33,7 @@ class Message
         $content_string = $this->createContentString($data);
         $content_string .= $this->createHistoryContent($data, $content_string);
         $content_string .= $this->createSystemMessage();
-        $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
+        $this->prompt->setContents([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
         $this->log->debug('messageCreate', ['prompt' => $this->prompt->toJson()]);
         try {
             $response = $this->gemini->getResponse($this->prompt->toJson());
