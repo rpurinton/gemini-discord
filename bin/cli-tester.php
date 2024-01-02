@@ -15,7 +15,7 @@ while (true) {
             case '':
                 break;
             case 'exit':
-                break 2;
+                exit(0);
             case 'clear':
                 $prompt->resetContent();
                 break;
