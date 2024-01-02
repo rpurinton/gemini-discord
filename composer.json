@@ -19,11 +19,11 @@
     ],
     "require": {
         "react/async": "^4.2",
-        "bunny/bunny": "@dev",
         "monolog/monolog": "^3.5",
         "team-reflex/discord-php": "^7.3",
         "symfony/http-client": "^7.0",
-        "rpurinton/gemini-php": "@dev"
+        "rpurinton/gemini-php": "@dev",
+        "discommand2/bunny": "v0.5.5.1"
     },
     "config": {
         "allow-plugins": {

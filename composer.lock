@@ -4,74 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb4342f456e77fc4d2acf152c610d388",
+    "content-hash": "e09ebc24b09ace86216e5e4874b10f5e",
     "packages": [
-        {
-            "name": "bunny/bunny",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jakubkulhan/bunny.git",
-                "reference": "10e34dec73397d30cb79f61dd81e9716644ede01"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jakubkulhan/bunny/zipball/10e34dec73397d30cb79f61dd81e9716644ede01",
-                "reference": "10e34dec73397d30cb79f61dd81e9716644ede01",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0",
-                "react/event-loop": "^1.0 || ^0.5 || ^0.4",
-                "react/promise": "~2.2"
-            },
-            "require-dev": {
-                "ext-pcntl": "*",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^9.5 || ^7.5.20",
-                "symfony/process": "^6.1 || ^4.4"
-            },
-            "suggest": {
-                "ext-pcntl": "For using synchronous AMQP/RabbitMQ client"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Bunny\\": "src/Bunny/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Kulhan",
-                    "email": "jakub.kulhan@gmail.com"
-                }
-            ],
-            "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
-            "keywords": [
-                "AMQP",
-                "bunny",
-                "exchange",
-                "message",
-                "messaging",
-                "queue",
-                "queueing",
-                "rabbit",
-                "rabbitmq",
-                "react",
-                "react-php",
-                "reactphp"
-            ],
-            "support": {
-                "issues": "https://github.com/jakubkulhan/bunny/issues",
-                "source": "https://github.com/jakubkulhan/bunny/tree/v0.5.5"
-            },
-            "time": "2023-08-01T19:34:13+00:00"
-        },
         {
             "name": "carbonphp/carbon-doctrine-types",
             "version": "3.1.0",
@@ -140,6 +74,74 @@
                 }
             ],
             "time": "2023-12-10T15:33:53+00:00"
+        },
+        {
+            "name": "discommand2/bunny",
+            "version": "v0.5.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/discommand2/bunny.git",
+                "reference": "a646744ad77e11a81a23a594efc11fcfaabca169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/discommand2/bunny/zipball/a646744ad77e11a81a23a594efc11fcfaabca169",
+                "reference": "a646744ad77e11a81a23a594efc11fcfaabca169",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4",
+                "react/promise": "~2.2"
+            },
+            "require-dev": {
+                "ext-pcntl": "*",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5 || ^7.5.20",
+                "symfony/process": "^6.1 || ^4.4"
+            },
+            "suggest": {
+                "ext-pcntl": "For using synchronous AMQP/RabbitMQ client"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bunny\\": "src/Bunny/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Kulhan",
+                    "email": "jakub.kulhan@gmail.com"
+                },
+                {
+                    "name": "Russell Purinton",
+                    "email": "russell.purinton@gmail.com"
+                }
+            ],
+            "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
+            "keywords": [
+                "AMQP",
+                "bunny",
+                "exchange",
+                "message",
+                "messaging",
+                "queue",
+                "queueing",
+                "rabbit",
+                "rabbitmq",
+                "react",
+                "react-php",
+                "reactphp"
+            ],
+            "support": {
+                "source": "https://github.com/discommand2/bunny/tree/v0.5.5.1"
+            },
+            "time": "2024-01-02T10:48:36+00:00"
         },
         {
             "name": "discord-php/http",
@@ -2474,12 +2476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "a278ca993f737a82b9803b4b437bfb35f9b1986c"
+                "reference": "6d4418d9c34db2f2184b9fc3aa1e43124108b5e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/a278ca993f737a82b9803b4b437bfb35f9b1986c",
-                "reference": "a278ca993f737a82b9803b4b437bfb35f9b1986c",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/6d4418d9c34db2f2184b9fc3aa1e43124108b5e2",
+                "reference": "6d4418d9c34db2f2184b9fc3aa1e43124108b5e2",
                 "shasum": ""
             },
             "require": {
@@ -2508,9 +2510,9 @@
             "support": {
                 "discord": "https://discord.gg/yCDS5TgupC",
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
-                "source": "https://github.com/rpurinton/gemini-php/tree/master"
+                "source": "https://github.com/rpurinton/gemini-php/tree/v0.1.3"
             },
-            "time": "2024-01-02T09:48:18+00:00"
+            "time": "2024-01-02T10:08:57+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4975,7 +4977,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bunny/bunny": 20,
         "rpurinton/gemini-php": 20
     },
     "prefer-stable": false,
