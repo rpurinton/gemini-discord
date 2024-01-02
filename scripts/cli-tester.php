@@ -25,6 +25,7 @@ while (true) {
             echo 'gemini...';
             $prompt->push(['role' => 'user', 'parts' => ['text' => $input]]);
             $response = $client->getResponse($prompt->toJson());
+            print_r($response);
             $text = $response->getText();
             $prompt->push(['role' => 'assistant', 'parts' => ['text' => $text]]);
             echo "\r       \rgemini> $text\n";
