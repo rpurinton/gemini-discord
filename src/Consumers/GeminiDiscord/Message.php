@@ -71,11 +71,11 @@ class Message
 
     private function createHistoryContent(array $data, string $content_string): string
     {
-        $token_count = $this->prompt->token_count($content_string);
+        $token_count = $this->prompt->tokenCount($content_string);
         $content = [];
         foreach ($data['history'] as $message_id => $message) {
             $history_message = $this->createHistoryMessage($message_id, $message);
-            $message_tokens = $this->prompt->token_count($history_message);
+            $message_tokens = $this->prompt->tokenCount($history_message);
             if ($token_count + $message_tokens > self::HISTORY_LIMIT) continue;
             $token_count += $message_tokens;
             $content[] = $history_message;
