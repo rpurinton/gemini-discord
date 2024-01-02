@@ -7,7 +7,7 @@ After=network.target
 Type=simple
 User=gemini-discord
 Group=gemini-discord
-ExecStart=/var/www/gemini-discord/scripts/geminidiscord.php %i
+ExecStart=/var/www/gemini-discord/bin/geminidiscord.php %i
 Restart=on-failure
 RestartSec=5
 
