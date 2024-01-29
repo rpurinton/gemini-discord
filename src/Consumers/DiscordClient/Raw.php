@@ -55,10 +55,15 @@ class Raw
         if (strpos($message->d->content, '<@' . $discord->id . '>') !== false) return true;
         if (strpos($message->d->content, '<@!' . $discord->id . '>') !== false) return true;
         if (strpos($message->d->content, '<@&' . $discord->id . '>') !== false) return true;
-        if (strpos(strtolower($message->d->content), 'hey gemini') !== false) return true;
+        if (strpos(strtolower($this->stripCommas($message->d->content)), 'hey gemini') !== false) return true;
         $bot_roles = $discord->guilds[$message->d->guild_id]->members[$discord->id]->roles;
         foreach ($bot_roles as $role) if (strpos($message->d->content, '<@&' . $role->id . '>') !== false) return true;
         return false;
+    }
+
+    private function stripCommas(string $content): string
+    {
+        return str_replace(',', '', $content);
     }
 
     private function allowed(stdClass $message): bool
@@ -82,7 +87,24 @@ class Raw
         $publish_message['d']['channel_name'] = $channel->name;
         $publish_message['d']['channel_topic'] = $channel->topic;
         $publish_message['d']['bot_roles'] = $guild->members[$discord->id]->roles;
-        $publish_message['d']['history'] = Async\await($channel->getMessageHistory(['limit' => 100]));
+        $retryCount = 0;
+        $messageHistory = null;
+
+        while ($retryCount < 8) {
+            $messageHistory = $channel->getMessageHistory(['limit' => 100]);
+            if ($messageHistory !== null) {
+                break;
+            }
+            // Exponential backoff: 100ms, 200ms, 400ms, 800ms, 1600ms...
+            usleep((100 * pow(2, $retryCount)) * 1000); // usleep expects microseconds
+            $retryCount++;
+        }
+
+        if ($messageHistory === null) {
+            throw new Error('Failed to get message history after retries');
+        }
+
+        $publish_message['d']['history'] = Async\await($messageHistory);
         return $publish_message;
     }
 }

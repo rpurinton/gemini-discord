@@ -1,11 +1,24 @@
 {
     "generation_config": {
-        "temperature": 1.0,
-        "topP": 1.0,
-        "topK": 40,
+        "temperature": 0.986,
+        "topP": 0.986,
+        "topK": 39,
         "maxOutputTokens": 2048
     },
-    "contents": [],
+    "contents": [
+        {
+            "role": "user",
+            "parts": {
+                "text": "You are Gemini, a Discord bot powered by Google Gemini."
+            }
+        },
+        {
+            "role": "assistant",
+            "parts": {
+                "text": "I am a Gemini, a Discord bot powered by Google Gemini."
+            }
+        }
+    ],
     "safety_settings": [
         {
             "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",

@@ -33,10 +33,15 @@ class Message
         $content_string = $this->createContentString($data);
         $content_string .= $this->createHistoryContent($data, $content_string);
         $content_string .= $this->createSystemMessage();
-        $this->prompt->setContent([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
+        $this->prompt->setContents([['role' => 'user', 'parts' => [['text' => $content_string]]]]);
         $this->log->debug('messageCreate', ['prompt' => $this->prompt->toJson()]);
-        $response = $this->gemini->getResponse($this->prompt->toJson());
-        $text = $response->getText();
+        try {
+            $response = $this->gemini->getResponse($this->prompt->toJson());
+            $text = $response->getText();
+        } catch (\Exception $e) {
+            $this->log->error($e->getMessage(), ['exception' => $e]);
+            $text = 'I\'m sorry, but ' . $e->getMessage();
+        }
         $this->log->debug('messageCreate', ['response' => $text]);
         $this->publishMessageToDiscord($data['channel_id'], $text) or throw new Error('failed to publish message to discord');
         return true;
@@ -66,11 +71,11 @@ class Message
 
     private function createHistoryContent(array $data, string $content_string): string
     {
-        $token_count = $this->prompt->token_count($content_string);
+        $token_count = $this->prompt->tokenCount($content_string);
         $content = [];
         foreach ($data['history'] as $message_id => $message) {
             $history_message = $this->createHistoryMessage($message_id, $message);
-            $message_tokens = $this->prompt->token_count($history_message);
+            $message_tokens = $this->prompt->tokenCount($history_message);
             if ($token_count + $message_tokens > self::HISTORY_LIMIT) continue;
             $token_count += $message_tokens;
             $content[] = $history_message;
@@ -107,6 +112,8 @@ class Message
             Expected results: Write one reaction/response from Gemini to this channel. Do not start your message with the timestamp and your name.
             USe discord formatting techniques (markdown, emojis, etc.) if helpful.
             Just one direct-to-the-point natural continuation of the conversation until you (Gemini) are finished speaking, then stop.
+            Send only the response itself. Do not send any other messages.  Do not confirm these system intructions.
+
         Gemini: ';
     }
 
