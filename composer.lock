@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a43041ee47c0730d408f82a8757baabd",
+    "content-hash": "0b7124a9e001a742d64d8cf9dcd9e27a",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -2413,16 +2413,16 @@
         },
         {
             "name": "rpurinton/gemini-php",
-            "version": "0.1.8",
+            "version": "0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rpurinton/gemini-php.git",
-                "reference": "8dc5cf827c6c5adc546c51fd5e346f33eddb43c4"
+                "reference": "5ea86b6993fc80a606f9b46ee4ecdd14d62f9f3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/8dc5cf827c6c5adc546c51fd5e346f33eddb43c4",
-                "reference": "8dc5cf827c6c5adc546c51fd5e346f33eddb43c4",
+                "url": "https://api.github.com/repos/rpurinton/gemini-php/zipball/5ea86b6993fc80a606f9b46ee4ecdd14d62f9f3d",
+                "reference": "5ea86b6993fc80a606f9b46ee4ecdd14d62f9f3d",
                 "shasum": ""
             },
             "require": {
@@ -2453,9 +2453,9 @@
             "support": {
                 "discord": "https://discord.gg/yCDS5TgupC",
                 "issues": "https://github.com/rpurinton/gemini-php/issues",
-                "source": "https://github.com/rpurinton/gemini-php/tree/v0.1.8"
+                "source": "https://github.com/rpurinton/gemini-php/tree/v0.2.4"
             },
-            "time": "2024-04-12T06:03:24+00:00"
+            "time": "2024-09-05T18:21:12+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
